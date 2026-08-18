@@ -1,0 +1,38 @@
+LAUNCH_PRODUCTS_30 = [
+    {"name": "Retail Management Software", "category": "POS/Retail", "usd": 1200.00, "pkr": 330000.00},
+    {"name": "Jewellery Store Management Software", "category": "POS/Retail", "usd": 1500.00, "pkr": 415000.00},
+    {"name": "Book Shop Billing Management Software", "category": "POS/Retail", "usd": 600.00, "pkr": 165000.00},
+    {"name": "Beauty and Cosmetics Shop Software", "category": "POS/Retail", "usd": 1000.00, "pkr": 275000.00},
+    {"name": "Luggage & Bags Business Software", "category": "POS/Retail", "usd": 1000.00, "pkr": 275000.00},
+    {"name": "Computer & Laptop Business Software", "category": "POS/Retail", "usd": 1000.00, "pkr": 275000.00},
+    {"name": "Electronics Store Management Software", "category": "POS/Retail", "usd": 1200.00, "pkr": 330000.00},
+    
+    {"name": "Petrol Pump Software", "category": "Industry ERP", "usd": 35000.00, "pkr": 9650000.00},
+    {"name": "LPG Business Software", "category": "Industry ERP", "usd": 35000.00, "pkr": 9650000.00},
+    {"name": "Gas Station Software", "category": "Industry ERP", "usd": 35000.00, "pkr": 9650000.00},
+    {"name": "Fuel Management Software", "category": "Industry ERP", "usd": 30000.00, "pkr": 8280000.00},
+    {"name": "Garments Manufacturing Software", "category": "Industry ERP", "usd": 30000.00, "pkr": 8280000.00},
+    {"name": "Sweets & Bakery Manufacturing Software", "category": "Industry ERP", "usd": 20000.00, "pkr": 5520000.00},
+    {"name": "Apparel Manufacturing Software", "category": "Industry ERP", "usd": 30000.00, "pkr": 8280000.00},
+    {"name": "Furniture Manufacturing Software", "category": "Industry ERP", "usd": 25000.00, "pkr": 6900000.00},
+    {"name": "Paper and Pulp Manufacturing Software", "category": "Industry ERP", "usd": 30000.00, "pkr": 8280000.00},
+    {"name": "Plastic and Rubber Manufacturing Software", "category": "Industry ERP", "usd": 30000.00, "pkr": 8280000.00},
+    {"name": "Textile Industry ERP", "category": "Industry ERP", "usd": 35000.00, "pkr": 9650000.00},
+    {"name": "Printing & Dyeing Industry Software", "category": "Industry ERP", "usd": 25000.00, "pkr": 6900000.00},
+    {"name": "Fashion Boutique Management Software", "category": "Industry ERP", "usd": 12000.00, "pkr": 3310000.00},
+    {"name": "Logistics & Transportation Software", "category": "Industry ERP", "usd": 30000.00, "pkr": 8280000.00},
+    {"name": "Auto Accessories Business Software", "category": "Industry ERP", "usd": 15000.00, "pkr": 4140000.00},
+    {"name": "Poultry Layer Farm Management Software", "category": "Industry ERP", "usd": 20000.00, "pkr": 5520000.00},
+    {"name": "Poultry Chicken Farm Processing Software", "category": "Industry ERP", "usd": 25000.00, "pkr": 6900000.00},
+    {"name": "Cloud ERP for Agriculture Business", "category": "Industry ERP", "usd": 20000.00, "pkr": 5520000.00},
+
+    {"name": "Hotel Management Software", "category": "Hospitality ERP", "usd": 15000.00, "pkr": 4140000.00},
+    {"name": "Cafe Management Software", "category": "Hospitality ERP", "usd": 5000.00, "pkr": 1380000.00},
+    {"name": "Banquet Hall Management Software", "category": "Hospitality ERP", "usd": 8000.00, "pkr": 2200000.00},
+
+    {"name": "Cloud ERP for Services Business", "category": "SME ERP", "usd": 20000.00, "pkr": 5520000.00},
+    {"name": "Small & Medium Businesses Software", "category": "SME ERP", "usd": 15000.00, "pkr": 4140000.00},
+    {"name": "Software for Visa & Immigration Consultants", "category": "SME ERP", "usd": 8000.00, "pkr": 2200000.00},
+
+    {"name": "Property Management Software", "category": "Real Estate ERP", "usd": 10000.00, "pkr": 2760000.00},
+]

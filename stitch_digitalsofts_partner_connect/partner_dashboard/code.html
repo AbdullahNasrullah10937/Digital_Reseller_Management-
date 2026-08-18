@@ -1,0 +1,410 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Digitalsofts Partner Portal - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                            "on-tertiary-fixed-variant": "#384762",
+                            "secondary-container": "#ff8928",
+                            "on-surface-variant": "#44474e",
+                            "inverse-primary": "#b3c7f3",
+                            "surface-container-lowest": "#ffffff",
+                            "on-tertiary": "#ffffff",
+                            "outline": "#75777f",
+                            "on-error": "#ffffff",
+                            "inverse-on-surface": "#edf0ff",
+                            "on-primary-fixed": "#021b3e",
+                            "tertiary": "#02122b",
+                            "surface": "#f9f9ff",
+                            "on-error-container": "#93000a",
+                            "on-primary-fixed-variant": "#33476c",
+                            "surface-container-highest": "#d9e2fc",
+                            "error-container": "#ffdad6",
+                            "surface-dim": "#d1daf4",
+                            "on-secondary-container": "#642f00",
+                            "tertiary-fixed-dim": "#b7c7e8",
+                            "on-background": "#121b2e",
+                            "secondary-fixed-dim": "#ffb786",
+                            "outline-variant": "#c5c6cf",
+                            "tertiary-container": "#172740",
+                            "on-tertiary-fixed": "#0b1b35",
+                            "on-surface": "#121b2e",
+                            "surface-variant": "#d9e2fc",
+                            "on-primary": "#ffffff",
+                            "surface-tint": "#4b5e85",
+                            "on-tertiary-container": "#7f8ead",
+                            "primary-fixed-dim": "#b3c7f3",
+                            "primary-fixed": "#d7e2ff",
+                            "on-secondary": "#ffffff",
+                            "tertiary-fixed": "#d6e3ff",
+                            "on-secondary-fixed": "#311300",
+                            "error": "#ba1a1a",
+                            "surface-container-low": "#f1f3ff",
+                            "primary-container": "#10264a",
+                            "background": "#f9f9ff",
+                            "secondary-fixed": "#ffdcc6",
+                            "surface-container-high": "#e1e8ff",
+                            "secondary": "#964900",
+                            "primary": "#00112e",
+                            "on-secondary-fixed-variant": "#723600",
+                            "surface-bright": "#f9f9ff",
+                            "inverse-surface": "#273044",
+                            "surface-container": "#e9edff",
+                            "on-primary-container": "#7a8eb8"
+                    },
+                    "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                    },
+                    "spacing": {
+                            "margin-mobile": "16px",
+                            "gutter": "24px",
+                            "sm": "8px",
+                            "xl": "32px",
+                            "base": "4px",
+                            "margin-desktop": "32px",
+                            "md": "16px",
+                            "lg": "24px",
+                            "container-max": "1440px",
+                            "xs": "4px"
+                    },
+                    "fontFamily": {
+                            "headline-lg-mobile": ["Inter"],
+                            "headline-md": ["Inter"],
+                            "body-sm": ["Inter"],
+                            "title-lg": ["Inter"],
+                            "display-lg": ["Inter"],
+                            "headline-lg": ["Inter"],
+                            "body-md": ["Inter"],
+                            "label-sm": ["Inter"],
+                            "body-lg": ["Inter"],
+                            "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                            "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                            "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                            "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                            "display-lg": ["48px", {"lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                            "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Subtle Shadows */
+        .shadow-card {
+            box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08);
+        }
+        .shadow-hover {
+            box-shadow: 0px 10px 15px -3px rgba(16, 24, 40, 0.05), 0px 4px 6px -2px rgba(16, 24, 40, 0.02);
+            transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        
+        /* Sparklines */
+        .sparkline-svg {
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex">
+<!-- SideNavBar (from JSON) -->
+<nav class="fixed left-0 top-0 h-full w-72 bg-tertiary-container dark:bg-on-primary-fixed text-on-tertiary dark:text-on-tertiary shadow-sm flex flex-col py-md z-50">
+<!-- Header -->
+<div class="px-gutter mb-xl flex flex-col gap-sm">
+<span class="text-headline-md font-headline-md text-secondary-container">Digitalsofts Logo</span>
+<div>
+<h2 class="font-title-lg text-title-lg">Partner Portal</h2>
+<p class="font-label-md text-label-md opacity-70">Enterprise Tier</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<ul class="flex flex-col flex-grow">
+<!-- Dashboard (Active) -->
+<li class="w-full">
+<a class="flex items-center px-gutter py-sm gap-md text-on-tertiary opacity-100 border-l-4 border-secondary-container bg-tertiary translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined fill">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+</li>
+<!-- Deals -->
+<li class="w-full mt-sm">
+<a class="flex items-center px-gutter py-sm gap-md text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-md text-label-md">Deals</span>
+</a>
+</li>
+<!-- Inventory -->
+<li class="w-full mt-sm">
+<a class="flex items-center px-gutter py-sm gap-md text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+</li>
+<!-- Leads -->
+<li class="w-full mt-sm">
+<a class="flex items-center px-gutter py-sm gap-md text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-label-md text-label-md">Leads</span>
+</a>
+</li>
+<!-- Performance -->
+<li class="w-full mt-sm">
+<a class="flex items-center px-gutter py-sm gap-md text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-md text-label-md">Performance</span>
+</a>
+</li>
+<!-- Settings -->
+<li class="w-full mt-sm">
+<a class="flex items-center px-gutter py-sm gap-md text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</li>
+</ul>
+<!-- Footer Actions -->
+<div class="px-gutter mt-auto flex flex-col gap-md">
+<!-- CTA -->
+<button class="bg-secondary-container text-on-tertiary font-label-md text-label-md py-sm px-md rounded-lg w-full text-center hover:opacity-90 transition-opacity">
+                Register Deal
+            </button>
+<!-- Help & Support -->
+<a class="flex items-center gap-md text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all py-sm -mx-gutter px-gutter" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-label-md text-label-md">Help &amp; Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="ml-72 flex-grow flex flex-col min-h-screen">
+<!-- TopNavBar (from JSON) -->
+<header class="bg-surface-bright dark:bg-surface-dim text-primary dark:text-primary-fixed border-b border-outline-variant docked top sticky z-40 flex justify-between items-center px-lg h-16 w-full">
+<!-- Brand / Search -->
+<div class="flex items-center gap-lg">
+<span class="text-title-lg font-title-lg font-bold text-primary hidden md:block">Partner Portal</span>
+<!-- Search Bar (on_left as per JSON) -->
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-sm text-outline">search</span>
+<input class="pl-xl pr-sm py-sm rounded-lg border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary-container focus:border-primary-container outline-none font-body-sm text-body-sm w-64 transition-all" placeholder="Search deals, leads..." type="text">
+</div>
+</div>
+<!-- Actions / Profile -->
+<div class="flex items-center gap-md">
+<!-- Tier Badge -->
+<span class="px-sm py-xs rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm border border-secondary-fixed-dim">
+                    Certified Reseller
+                </span>
+<!-- Trailing Icon Actions -->
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full focus:ring-2 focus:ring-primary-container">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full focus:ring-2 focus:ring-primary-container">
+<span class="material-symbols-outlined">grade</span>
+</button>
+<!-- User Profile -->
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-sm cursor-pointer focus:ring-2 focus:ring-primary-container" tabindex="0">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a business partner in a corporate setting. High quality, well-lit, modern corporate environment. The image is cropped to a perfect square suitable for an avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBq0YbkVxh7jVlzEjufzuY0BCwZcgZq38OvGVn_QQsqaYmkIGmk9xjr8mBtCKla0jnsbVzPdo1gYNnm1hvJyumFLSHUNXBYteovtyMnVeFwWGRyhpPDzBKNKFYy9ytMDZ2kHiY5yn6lVTx6N3iqJcNwBa8o8aZx59RxWtdSeMp8ynmF52tkmBdwt0QE7s23i8aHaHTGT6MJzdYBX8KzyXps5lbNT362zK9pWQOfEVHXKqb4Rpm2_0p">
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<main class="flex-grow p-lg max-w-container-max mx-auto w-full flex flex-col gap-gutter">
+<!-- Page Header -->
+<div class="flex flex-col gap-base mb-sm">
+<h1 class="font-headline-lg text-headline-lg text-on-background">Good morning, Alexander</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Here's what's happening with your partner account.</p>
+</div>
+<!-- Metrics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<!-- Card 1: Total Deals -->
+<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant shadow-card hover:shadow-hover hover:border-primary-container flex flex-col justify-between min-h-[140px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-xs">Total Deals</p>
+<p class="font-headline-md text-headline-md text-on-background">1,248</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">handshake</span>
+</div>
+<div class="flex items-end justify-between mt-md">
+<div class="flex items-center gap-xs text-on-primary-container bg-surface-container px-sm py-xs rounded-md">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-label-sm text-label-sm">+12.5%</span>
+</div>
+<!-- Sparkline -->
+<svg class="sparkline-svg stroke-on-primary-container" height="24" viewBox="0 0 60 24" width="60">
+<path d="M0,20 L10,15 L20,18 L30,10 L40,12 L50,5 L60,8"></path>
+</svg>
+</div>
+</div>
+<!-- Card 2: Active Deals -->
+<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant shadow-card hover:shadow-hover hover:border-primary-container flex flex-col justify-between min-h-[140px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-xs">Active Deals</p>
+<p class="font-headline-md text-headline-md text-on-background">342</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">sync_alt</span>
+</div>
+<div class="flex items-end justify-between mt-md">
+<div class="flex items-center gap-xs text-on-primary-container bg-surface-container px-sm py-xs rounded-md">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-label-sm text-label-sm">+5.2%</span>
+</div>
+<svg class="sparkline-svg stroke-on-primary-container" height="24" viewBox="0 0 60 24" width="60">
+<path d="M0,18 L15,12 L30,15 L45,8 L60,10"></path>
+</svg>
+</div>
+</div>
+<!-- Card 3: Total Commission -->
+<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant shadow-card hover:shadow-hover hover:border-primary-container flex flex-col justify-between min-h-[140px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-xs">Total Commission</p>
+<p class="font-headline-md text-headline-md text-on-background">$84,500</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">payments</span>
+</div>
+<div class="flex items-end justify-between mt-md">
+<div class="flex items-center gap-xs text-[#166534] bg-[#dcfce7] px-sm py-xs rounded-md">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-label-sm text-label-sm">+22.4%</span>
+</div>
+<svg class="sparkline-svg stroke-[#166534]" height="24" viewBox="0 0 60 24" width="60">
+<path d="M0,22 L10,18 L20,20 L30,12 L40,8 L50,10 L60,2"></path>
+</svg>
+</div>
+</div>
+<!-- Card 4: Pending Commission -->
+<div class="bg-surface-container-lowest rounded-xl p-md border border-outline-variant shadow-card hover:shadow-hover hover:border-secondary-container flex flex-col justify-between min-h-[140px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-xs">Pending Commission</p>
+<p class="font-headline-md text-headline-md text-on-background">$12,350</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">hourglass_empty</span>
+</div>
+<div class="flex items-end justify-between mt-md">
+<div class="flex items-center gap-xs text-secondary-container bg-secondary-fixed px-sm py-xs rounded-md">
+<span class="material-symbols-outlined text-[16px]">trending_flat</span>
+<span class="font-label-sm text-label-sm">Steady</span>
+</div>
+<svg class="sparkline-svg stroke-secondary-container" height="24" viewBox="0 0 60 24" width="60">
+<path d="M0,12 L15,10 L30,14 L45,12 L60,12"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Recent Deals Table Area -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-card overflow-hidden mt-sm flex flex-col">
+<!-- Table Header/Actions -->
+<div class="p-md border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-title-lg text-title-lg text-on-background">Recent Deals</h3>
+<button class="flex items-center gap-xs text-primary-container font-label-md text-label-md hover:bg-surface-container-low px-sm py-xs rounded transition-colors">
+<span>View All</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<!-- Table Content -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider border-b border-outline-variant">
+<th class="p-md font-semibold">Deal ID</th>
+<th class="p-md font-semibold">Customer</th>
+<th class="p-md font-semibold">Product</th>
+<th class="p-md font-semibold">Deal Value</th>
+<th class="p-md font-semibold">Commission</th>
+<th class="p-md font-semibold">Status</th>
+<th class="p-md font-semibold">Registered</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-background divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="p-md font-medium">#DL-4920</td>
+<td class="p-md">Acme Corp</td>
+<td class="p-md text-on-surface-variant">Enterprise Suite</td>
+<td class="p-md">$125,000</td>
+<td class="p-md">$12,500</td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#dcfce7] text-[#166534] font-label-sm text-label-sm">
+                                        Won
+                                    </span>
+</td>
+<td class="p-md text-on-surface-variant">Oct 12, 2024</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="p-md font-medium">#DL-4919</td>
+<td class="p-md">Globex Inc</td>
+<td class="p-md text-on-surface-variant">Cloud Storage Pro</td>
+<td class="p-md">$45,000</td>
+<td class="p-md">$4,500</td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#fef9c3] text-[#854d0e] font-label-sm text-label-sm">
+                                        Pending
+                                    </span>
+</td>
+<td class="p-md text-on-surface-variant">Oct 10, 2024</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="p-md font-medium">#DL-4918</td>
+<td class="p-md">Soylent Corp</td>
+<td class="p-md text-on-surface-variant">Data Analytics API</td>
+<td class="p-md">$85,000</td>
+<td class="p-md">$8,500</td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#dbeafe] text-[#1e40af] font-label-sm text-label-sm">
+                                        Approved
+                                    </span>
+</td>
+<td class="p-md text-on-surface-variant">Oct 08, 2024</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface transition-colors">
+<td class="p-md font-medium">#DL-4915</td>
+<td class="p-md">Initech</td>
+<td class="p-md text-on-surface-variant">CRM Basic</td>
+<td class="p-md">$12,000</td>
+<td class="p-md">$1,200</td>
+<td class="p-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-[#fee2e2] text-[#991b1b] font-label-sm text-label-sm">
+                                        Lost
+                                    </span>
+</td>
+<td class="p-md text-on-surface-variant">Oct 05, 2024</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>

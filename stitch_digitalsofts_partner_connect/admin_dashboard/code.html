@@ -1,0 +1,562 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Admin Dashboard - Digitalsofts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#384762",
+                      "secondary-container": "#ff8928",
+                      "on-surface-variant": "#44474e",
+                      "inverse-primary": "#b3c7f3",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "outline": "#75777f",
+                      "on-error": "#ffffff",
+                      "inverse-on-surface": "#edf0ff",
+                      "on-primary-fixed": "#021b3e",
+                      "tertiary": "#02122b",
+                      "surface": "#f9f9ff",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed-variant": "#33476c",
+                      "surface-container-highest": "#d9e2fc",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#d1daf4",
+                      "on-secondary-container": "#642f00",
+                      "tertiary-fixed-dim": "#b7c7e8",
+                      "on-background": "#121b2e",
+                      "secondary-fixed-dim": "#ffb786",
+                      "outline-variant": "#c5c6cf",
+                      "tertiary-container": "#172740",
+                      "on-tertiary-fixed": "#0b1b35",
+                      "on-surface": "#121b2e",
+                      "surface-variant": "#d9e2fc",
+                      "on-primary": "#ffffff",
+                      "surface-tint": "#4b5e85",
+                      "on-tertiary-container": "#7f8ead",
+                      "primary-fixed-dim": "#b3c7f3",
+                      "primary-fixed": "#d7e2ff",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed": "#d6e3ff",
+                      "on-secondary-fixed": "#311300",
+                      "error": "#ba1a1a",
+                      "surface-container-low": "#f1f3ff",
+                      "primary-container": "#10264a",
+                      "background": "#f9f9ff",
+                      "secondary-fixed": "#ffdcc6",
+                      "surface-container-high": "#e1e8ff",
+                      "secondary": "#964900",
+                      "primary": "#00112e",
+                      "on-secondary-fixed-variant": "#723600",
+                      "surface-bright": "#f9f9ff",
+                      "inverse-surface": "#273044",
+                      "surface-container": "#e9edff",
+                      "on-primary-container": "#7a8eb8"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "sm": "8px",
+                      "xl": "32px",
+                      "base": "4px",
+                      "margin-desktop": "32px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "container-max": "1440px",
+                      "xs": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "title-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "title-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "60px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+        body { background-color: #F6F8FB; }
+    </style>
+</head>
+<body class="font-body-md text-body-md text-on-background bg-background h-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-72 bg-tertiary-container text-on-tertiary shadow-sm flex flex-col py-md z-50">
+<div class="px-gutter mb-xl flex items-center gap-sm">
+<span class="material-symbols-outlined text-headline-md text-secondary-container" data-icon="dashboard">dashboard</span>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-secondary-container">Partner Portal</h1>
+<p class="font-label-sm text-label-sm text-on-tertiary opacity-70">Enterprise Tier</p>
+</div>
+</div>
+<nav class="flex-1 px-md flex flex-col gap-sm">
+<a class="flex items-center gap-md px-md py-sm rounded text-on-tertiary opacity-100 border-l-4 border-secondary-container bg-tertiary translate-x-1 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>
+                Deals
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                Inventory
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+                Leads
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+                Performance
+            </a>
+<a class="flex items-center gap-md px-md py-sm rounded text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="px-gutter mt-auto mb-gutter">
+<button class="w-full bg-secondary-container text-on-primary font-label-md text-label-md font-bold py-sm px-md rounded-lg flex items-center justify-center gap-sm">
+                Register Deal
+            </button>
+</div>
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-sm rounded text-on-tertiary opacity-70 hover:bg-tertiary hover:opacity-100 transition-all font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+                Help &amp; Support
+            </a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="ml-72 flex-1 flex flex-col h-full overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center px-lg h-16 w-full bg-surface-bright border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-md">
+<h2 class="font-title-lg text-title-lg font-bold text-primary">Admin Dashboard</h2>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-sm">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+</span>
+<input class="pl-xl pr-sm py-sm border border-outline-variant rounded-lg text-body-sm font-body-sm bg-surface-container-lowest focus:ring-2 focus:ring-primary-container focus:border-primary-container transition-all" placeholder="Search..." type="text">
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors p-sm rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors p-sm rounded-full">
+<span class="material-symbols-outlined" data-icon="grade">grade</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden border border-outline-variant">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a corporate executive in a modern office setting. The lighting is bright and clean, typical of a high-end corporate portrait. The executive is wearing business casual attire. The background is slightly blurred but suggests a contemporary workplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAxQQrhfGGDZ3hQmZdtivep2FUTk9vOBEsOwSpcmnq5E-cazn8DY68uUA9i7JDXkhn4-4qCRqKrSzXSPwd7XrHM7tTTM8aoZhBtVDXodLhfwosP6EJNbxC9EUSrX8MoyIZidwHVtz70MCWKPRLTj_b31eVHwuWRWCozNTJvE48dqpcjr12f__mFOvK0NISOwC3lew71elN_YutJw3ZgUyapFzfjyg1Ge3KbY3t0hjUMG7oAj7eQe0i">
+</div>
+</div>
+</header>
+<!-- Scrollable Canvas -->
+<main class="flex-1 overflow-y-auto p-lg lg:p-margin-desktop">
+<div class="max-w-container-max mx-auto space-y-gutter">
+<!-- Metric Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-md">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-secondary-container transition-colors relative overflow-hidden group">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Partners</span>
+<span class="material-symbols-outlined text-outline text-title-lg" data-icon="groups">groups</span>
+</div>
+<div class="font-headline-md text-headline-md text-primary font-bold">1,248</div>
+<div class="mt-sm flex items-center gap-xs text-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+<span>+12% this month</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-secondary-container transition-colors">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Pending Apps</span>
+<span class="material-symbols-outlined text-outline text-title-lg" data-icon="assignment_ind">assignment_ind</span>
+</div>
+<div class="font-headline-md text-headline-md text-primary font-bold">42</div>
+<div class="mt-sm flex items-center gap-xs text-error font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="error_outline">error_outline</span>
+<span>Requires review</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-secondary-container transition-colors">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Active Deals</span>
+<span class="material-symbols-outlined text-outline text-title-lg" data-icon="work">work</span>
+</div>
+<div class="font-headline-md text-headline-md text-primary font-bold">856</div>
+<div class="mt-sm flex items-center gap-xs text-primary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_flat">trending_flat</span>
+<span>Stable</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-secondary-container transition-colors">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Pending Approvals</span>
+<span class="material-symbols-outlined text-outline text-title-lg" data-icon="rule_folder">rule_folder</span>
+</div>
+<div class="font-headline-md text-headline-md text-primary font-bold">18</div>
+<div class="mt-sm flex items-center gap-xs text-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="hourglass_empty">hourglass_empty</span>
+<span>Action needed</span>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-secondary-container transition-colors">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Commission</span>
+<span class="material-symbols-outlined text-outline text-title-lg" data-icon="payments">payments</span>
+</div>
+<div class="font-headline-md text-headline-md text-primary font-bold">$2.4M</div>
+<div class="mt-sm flex items-center gap-xs text-secondary-container font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+<span>+5% YTD</span>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm hover:border-secondary-container transition-colors">
+<div class="flex justify-between items-start mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Pending Payouts</span>
+<span class="material-symbols-outlined text-outline text-title-lg" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="font-headline-md text-headline-md text-primary font-bold">$125K</div>
+<div class="mt-sm flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+<span>Due next week</span>
+</div>
+</div>
+</div>
+<!-- Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Partner Growth Line Chart -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm lg:col-span-2">
+<h3 class="font-title-lg text-title-lg font-semibold text-primary mb-md">Partner Growth</h3>
+<div class="h-64 w-full relative">
+<canvas id="partnerGrowthChart"></canvas>
+</div>
+</div>
+<!-- Deal Status Donut Chart -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-title-lg text-title-lg font-semibold text-primary mb-md">Deal Status Distribution</h3>
+<div class="h-64 w-full relative flex items-center justify-center">
+<canvas id="dealStatusChart"></canvas>
+</div>
+</div>
+</div>
+<!-- Activity Tables Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Recent Applications -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<h3 class="font-title-lg text-title-lg font-semibold text-primary">Recent Applications</h3>
+<button class="font-label-md text-label-md text-secondary-container hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md">
+<th class="p-sm font-medium border-b border-outline-variant">Company</th>
+<th class="p-sm font-medium border-b border-outline-variant">Date Applied</th>
+<th class="p-sm font-medium border-b border-outline-variant">Status</th>
+<th class="p-sm font-medium border-b border-outline-variant">Action</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm">
+<tr class="border-b border-outline-variant hover:bg-background transition-colors">
+<td class="p-sm">TechCorp Inc.</td>
+<td class="p-sm text-on-surface-variant">Oct 24, 2023</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-tertiary-container text-on-tertiary-container">Pending</span>
+</td>
+<td class="p-sm">
+<button class="text-primary-container hover:text-secondary-container font-label-sm text-label-sm">Review</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-background transition-colors">
+<td class="p-sm">Global Solutions</td>
+<td class="p-sm text-on-surface-variant">Oct 23, 2023</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-tertiary-container text-on-tertiary-container">Pending</span>
+</td>
+<td class="p-sm">
+<button class="text-primary-container hover:text-secondary-container font-label-sm text-label-sm">Review</button>
+</td>
+</tr>
+<tr class="hover:bg-background transition-colors">
+<td class="p-sm">Innovate LLC</td>
+<td class="p-sm text-on-surface-variant">Oct 22, 2023</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-tertiary-container text-on-tertiary-container">Pending</span>
+</td>
+<td class="p-sm">
+<button class="text-primary-container hover:text-secondary-container font-label-sm text-label-sm">Review</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Recent Deals -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col">
+<div class="p-md border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<h3 class="font-title-lg text-title-lg font-semibold text-primary">Recent Deals</h3>
+<button class="font-label-md text-label-md text-secondary-container hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-md text-label-md">
+<th class="p-sm font-medium border-b border-outline-variant">Deal Name</th>
+<th class="p-sm font-medium border-b border-outline-variant">Partner</th>
+<th class="p-sm font-medium border-b border-outline-variant">Value</th>
+<th class="p-sm font-medium border-b border-outline-variant">Status</th>
+</tr>
+</thead>
+<tbody class="font-body-sm text-body-sm">
+<tr class="border-b border-outline-variant hover:bg-background transition-colors">
+<td class="p-sm font-medium text-primary">Enterprise License Upgrade</td>
+<td class="p-sm text-on-surface-variant">TechCorp Inc.</td>
+<td class="p-sm">$45,000</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-surface-container-highest text-primary-container">In Progress</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-background transition-colors">
+<td class="p-sm font-medium text-primary">Cloud Migration Project</td>
+<td class="p-sm text-on-surface-variant">CloudNet Systems</td>
+<td class="p-sm">$120,000</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-[#e6f4ea] text-[#137333]">Won</span>
+</td>
+</tr>
+<tr class="hover:bg-background transition-colors">
+<td class="p-sm font-medium text-primary">Security Audit Q4</td>
+<td class="p-sm text-on-surface-variant">SecureIT Partners</td>
+<td class="p-sm">$28,500</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-surface-container-highest text-primary-container">In Progress</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        // Chart.js Configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            // Partner Growth Chart
+            const ctxGrowth = document.getElementById('partnerGrowthChart').getContext('2d');
+            new Chart(ctxGrowth, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                    datasets: [{
+                        label: 'Total Partners',
+                        data: [850, 890, 920, 980, 1050, 1100, 1120, 1180, 1220, 1248],
+                        borderColor: '#ff8928', // secondary-container
+                        backgroundColor: 'rgba(255, 137, 40, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#00112e', // primary
+                        pointBorderColor: '#ffffff',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#02122b', // tertiary
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            padding: 10,
+                            cornerRadius: 4,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false, drawBorder: false },
+                            ticks: { color: '#75777f', font: { family: 'Inter', size: 12 } }
+                        },
+                        y: {
+                            grid: { color: '#e9edff', drawBorder: false },
+                            ticks: { color: '#75777f', font: { family: 'Inter', size: 12 }, padding: 10 }
+                        }
+                    },
+                    interaction: { mode: 'index', intersect: false }
+                }
+            });
+
+            // Deal Status Chart
+            const ctxStatus = document.getElementById('dealStatusChart').getContext('2d');
+            new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Won', 'In Progress', 'Pending', 'Lost'],
+                    datasets: [{
+                        data: [45, 30, 15, 10],
+                        backgroundColor: [
+                            '#00112e', // primary
+                            '#ff8928', // secondary-container
+                            '#b3c7f3', // inverse-primary
+                            '#c5c6cf'  // outline-variant
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#44474e',
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { family: 'Inter', size: 12 }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#02122b',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            padding: 10,
+                            cornerRadius: 4
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Partner Portal Login - Digitalsofts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#121b2e",
+                        "background": "#f9f9ff",
+                        "surface-container": "#e9edff",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#ffdcc6",
+                        "surface-variant": "#d9e2fc",
+                        "primary": "#00112e",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb786",
+                        "surface-bright": "#f9f9ff",
+                        "secondary-container": "#ff8928",
+                        "outline-variant": "#c5c6cf",
+                        "surface": "#f9f9ff",
+                        "tertiary-fixed-dim": "#b7c7e8",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#172740",
+                        "tertiary": "#02122b",
+                        "on-tertiary-container": "#7f8ead",
+                        "outline": "#75777f",
+                        "on-primary-fixed-variant": "#33476c",
+                        "on-primary-container": "#7a8eb8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#384762",
+                        "inverse-primary": "#b3c7f3",
+                        "surface-container-high": "#e1e8ff",
+                        "surface-dim": "#d1daf4",
+                        "primary-container": "#10264a",
+                        "on-secondary-fixed": "#311300",
+                        "on-tertiary-fixed": "#0b1b35",
+                        "surface-container-low": "#f1f3ff",
+                        "inverse-surface": "#273044",
+                        "surface-tint": "#4b5e85",
+                        "primary-fixed": "#d7e2ff",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#d9e2fc",
+                        "primary-fixed-dim": "#b3c7f3",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#642f00",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#723600",
+                        "on-primary-fixed": "#021b3e",
+                        "secondary": "#964900",
+                        "on-surface-variant": "#44474e",
+                        "inverse-on-surface": "#edf0ff",
+                        "on-surface": "#121b2e",
+                        "tertiary-fixed": "#d6e3ff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "container-max": "1440px",
+                        "xs": "4px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "60px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen w-full antialiased">
+<main class="flex min-h-screen w-full flex-col md:flex-row">
+<!-- Left Column: Branding Showcase -->
+<div class="relative hidden w-full flex-col justify-between overflow-hidden bg-primary md:flex md:w-1/2 lg:w-[45%] xl:w-[40%]">
+<!-- High-end abstract background layer -->
+<div class="absolute inset-0 z-0 opacity-40 mix-blend-soft-light bg-cover bg-center" data-alt="A highly sophisticated abstract 3D visualization of interconnected glowing data nodes, clean wireframes, and smooth geometric planes floating in a deep midnight blue void. The lighting is pristine and dramatic, suggesting enterprise-scale software architecture and secure global connectivity. The composition is highly structured, modern, and perfectly suited for a premium B2B technology platform's login screen background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCqT5NNoGxLEtHocvgIfznEo3A5EIj9srJi46AdPgQv4Sr0r4Xsui09YDwDqzMf-igQpf8bVjKkOHa5V5EJ2br6PV-X0fy57QcNeiG4ocDXhdWrs9Il9Y1zEDDZy6YkKEL-3tsUH0adMguE1xX5BiArCHMQdTkxafymqxk7IhuPdoFsBUhwIDC0vWnKkj2jxgasqWnUYlq0-R23biZY41zWKCTEpQUU7dIEAvLl4vIWWp9B3WKDQD1J')"></div>
+<!-- Gradient Overlay for readability -->
+<div class="absolute inset-0 z-10 bg-gradient-to-b from-primary/80 via-primary/50 to-primary"></div>
+<div class="relative z-20 flex flex-col p-margin-desktop lg:p-[48px] h-full justify-between">
+<!-- Logo Anchor -->
+<div>
+<a class="flex items-center gap-sm" href="#">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary-container text-on-secondary">
+<span class="material-symbols-outlined text-[24px]">view_in_ar</span>
+</div>
+<span class="font-headline-md text-headline-md font-bold text-on-primary">Digitalsofts</span>
+</a>
+</div>
+<!-- Messaging Anchor -->
+<div class="mb-xl max-w-md">
+<h1 class="font-display-lg text-display-lg text-on-primary mb-md">
+                        Empower your enterprise.
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-primary-fixed-variant">
+                        Access our industry-leading partner portal. Manage leads, track performance, and scale your business with enterprise-grade precision tools designed for top-tier networks.
+                    </p>
+</div>
+<!-- Subtle Trust Indicators -->
+<div class="flex items-center gap-lg border-t border-on-primary-fixed-variant pt-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary-container">shield_lock</span>
+<span class="font-label-sm text-label-sm text-on-primary-fixed-variant">SOC 2 Type II Certified</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary-container">language</span>
+<span class="font-label-sm text-label-sm text-on-primary-fixed-variant">Global Availability</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Login Interface -->
+<div class="flex w-full flex-col justify-center bg-surface-container-lowest px-margin-mobile py-xl md:w-1/2 md:px-margin-desktop lg:w-[55%] xl:w-[60%] lg:px-[120px]">
+<!-- Mobile Logo (Hidden on Desktop) -->
+<div class="mb-xl flex md:hidden">
+<a class="flex items-center gap-sm" href="#">
+<div class="flex h-8 w-8 items-center justify-center rounded bg-secondary-container text-on-secondary">
+<span class="material-symbols-outlined text-[20px]">view_in_ar</span>
+</div>
+<span class="font-title-lg text-title-lg font-bold text-primary">Digitalsofts</span>
+</a>
+</div>
+<!-- Login Container -->
+<div class="mx-auto w-full max-w-[420px]">
+<div class="mb-xl">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-base">Sign in to Partner Portal</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Welcome back. Please enter your credentials to access your dashboard.</p>
+</div>
+<form class="space-y-md">
+<!-- Email Field -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="email">Email address</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-sm pointer-events-none">
+<span class="material-symbols-outlined text-outline">mail</span>
+</div>
+<input class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest py-[10px] pl-10 pr-sm font-body-md text-body-md text-on-surface placeholder:text-outline focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-primary-container/20 transition-all shadow-sm" id="email" name="email" placeholder="name@company.com" required="" type="email">
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="password">Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 flex items-center pl-sm pointer-events-none">
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+<input class="w-full rounded-lg border border-outline-variant bg-surface-container-lowest py-[10px] pl-10 pr-sm font-body-md text-body-md text-on-surface placeholder:text-outline focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-primary-container/20 transition-all shadow-sm" id="password" name="password" placeholder="••••••••" required="" type="password">
+</div>
+</div>
+<!-- Options Row -->
+<div class="flex items-center justify-between pt-base pb-sm">
+<div class="flex items-center gap-sm">
+<input class="h-4 w-4 rounded border-outline-variant text-secondary-container focus:ring-primary-container/20 bg-surface-container-lowest" id="remember_me" name="remember_me" type="checkbox">
+<label class="font-body-sm text-body-sm text-on-surface-variant cursor-pointer" for="remember_me">Remember me</label>
+</div>
+<a class="font-label-sm text-label-sm text-primary-container hover:text-secondary-container transition-colors" href="#">
+                            Forgot password?
+                        </a>
+</div>
+<!-- Primary Action -->
+<button class="w-full flex items-center justify-center gap-sm rounded-lg bg-secondary-container px-md py-[12px] font-label-md text-label-md text-on-secondary shadow-sm hover:bg-secondary transition-colors duration-200" type="submit">
+                        Sign In
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</form>
+<!-- Alternative Action -->
+<div class="mt-lg text-center border-t border-outline-variant pt-lg">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Don't have an account? 
+                        <a class="font-label-sm text-label-sm text-primary-container hover:text-secondary-container transition-colors ml-1" href="#">
+                            Become a Partner
+                        </a>
+</p>
+</div>
+</div>
+</div>
+</main>
+</body></html>
