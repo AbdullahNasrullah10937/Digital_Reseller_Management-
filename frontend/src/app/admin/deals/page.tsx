@@ -20,7 +20,7 @@ type AdminDealItem = {
   estimated_value: number;
   currency: string;
   status: string;
-  is_flagged_duplicate: bool;
+  is_flagged_duplicate: boolean;
   protection_expiry_date: string | null;
   created_at: string;
 };
