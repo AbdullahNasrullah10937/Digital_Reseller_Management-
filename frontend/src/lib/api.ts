@@ -152,6 +152,13 @@ export async function approveDeal(token: string, dealId: string, protectionDays:
   }, token);
 }
 
+export async function rejectDeal(token: string, dealId: string, rejectionReason: string) {
+  return apiFetch(`/api/v1/admin/deals/${dealId}/reject`, {
+    method: 'POST',
+    body: JSON.stringify({ rejection_reason: rejectionReason }),
+  }, token);
+}
+
 export async function markDealWon(token: string, dealId: string) {
   return apiFetch(`/api/v1/admin/deals/${dealId}/mark-won`, {
     method: 'POST',
