@@ -1,6 +1,6 @@
 /**
  * Server-side Supabase helper.
- * Uses native fetch without @supabase/ssr dependency.
+ * Supports PKCE code exchange with code_verifier via Supabase Auth REST.
  */
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -9,15 +9,19 @@ const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 export async function createClient() {
   return {
     auth: {
-      async exchangeCodeForSession(code: string) {
-        // Exchange auth code for access token via Supabase Auth REST
+      async exchangeCodeForSession(code: string, codeVerifier?: string) {
+        const bodyPayload: Record<string, string> = { auth_code: code };
+        if (codeVerifier) {
+          bodyPayload.code_verifier = codeVerifier;
+        }
+
         const res = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=pkce`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'apikey': SUPABASE_ANON_KEY,
           },
-          body: JSON.stringify({ auth_code: code }),
+          body: JSON.stringify(bodyPayload),
         });
 
         if (!res.ok) {

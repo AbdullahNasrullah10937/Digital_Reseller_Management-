@@ -1,6 +1,6 @@
 /**
  * Lightweight Supabase Auth client using only the native fetch API.
- * No npm packages required — communicates directly with Supabase REST endpoints.
+ * Configured with explicit PKCE flow for OAuth authentication.
  */
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -19,7 +19,7 @@ export type SupabaseSession = {
   user: SupabaseUser;
 };
 
-// ── Session Storage (localStorage for browser) ────────────────────────────────
+// ── Session Storage ───────────────────────────────────────────────────────────
 
 const SESSION_KEY = 'ds_partner_session';
 
@@ -52,6 +52,7 @@ export function clearSession() {
   if (typeof window !== 'undefined') {
     localStorage.removeItem(SESSION_KEY);
     document.cookie = 'ds_session_token=; path=/; max-age=0; SameSite=Lax';
+    document.cookie = 'ds_code_verifier=; path=/; max-age=0; SameSite=Lax';
   }
 }
 
@@ -97,7 +98,7 @@ export async function signOut(): Promise<void> {
         'apikey': SUPABASE_ANON_KEY,
         'Authorization': `Bearer ${token}`,
       },
-    }).catch(() => {}); // ignore error — clear local session regardless
+    }).catch(() => {});
   }
   clearSession();
 }
@@ -106,7 +107,6 @@ export async function getUser(): Promise<SupabaseUser | null> {
   const session = getSession();
   if (!session) return null;
 
-  // Optionally re-validate with Supabase
   try {
     const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
       headers: {
@@ -120,17 +120,45 @@ export async function getUser(): Promise<SupabaseUser | null> {
     }
     return await res.json();
   } catch {
-    return session.user; // Fallback to cached user if network fails
+    return session.user;
   }
 }
 
-// ── Google OAuth ───────────────────────────────────────────────────────────────
+// ── Google OAuth (Strict PKCE Flow) ──────────────────────────────────────────
 
-export function signInWithGoogle(redirectTo: string = '/dashboard') {
+function generateBase64UrlRandom(length: number = 32): string {
+  const array = new Uint8Array(length);
+  window.crypto.getRandomValues(array);
+  return btoa(String.fromCharCode.apply(null, Array.from(array)))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
+async function sha256Base64Url(str: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(str);
+  const digest = await window.crypto.subtle.digest('SHA-256', data);
+  return btoa(String.fromCharCode.apply(null, Array.from(new Uint8Array(digest))))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
+export async function signInWithGoogle(redirectTo: string = '/dashboard') {
+  // Generate PKCE code verifier and S256 code challenge
+  const verifier = generateBase64UrlRandom(32);
+  const challenge = await sha256Base64Url(verifier);
+
+  // Store code verifier in a cookie so server Route Handler can read it during exchange
+  document.cookie = `ds_code_verifier=${verifier}; path=/; max-age=3600; SameSite=Lax`;
+
   const callbackUrl = encodeURIComponent(
     `${window.location.origin}/auth/callback?next=${redirectTo}`
   );
-  const oauthUrl = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${callbackUrl}`;
+  
+  // Explicit PKCE flow (flowType: 'pkce')
+  const oauthUrl = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${callbackUrl}&code_challenge=${challenge}&code_challenge_method=S256`;
   window.location.href = oauthUrl;
 }
 
