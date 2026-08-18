@@ -4,7 +4,7 @@ from app.api.v1 import applications, products, deals, commissions, partners
 api_router = APIRouter()
 
 # Public endpoints
-api_router.include_router(applications.router, prefix="/applications")
+api_router.include_router(applications.router)
 
 # Authenticated partner endpoints
 api_router.include_router(products.router)
