@@ -1,50 +1,101 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   DollarSign, 
   CheckCircle2, 
   Clock, 
   AlertCircle, 
-  Send, 
   Building, 
-  ArrowUpRight, 
-  ShieldCheck, 
   X 
 } from 'lucide-react';
+import { getAccessToken } from '@/lib/supabase/client';
+import { fetchCommissions, requestPayout } from '@/lib/api';
+
+type CommissionItem = {
+  id: string;
+  deal_id: string;
+  deal_value: number;
+  applied_tier: string;
+  commission_rate: number;
+  commission_amount: number;
+  currency: string;
+  status: string;
+  approved_at: string | null;
+  paid_at: string | null;
+  created_at: string;
+};
 
 export default function CommissionsPayoutsPage() {
+  const [commissions, setCommissions] = useState<CommissionItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [requestSubmitted, setRequestSubmitted] = useState(false);
+  const [submittingPayout, setSubmittingPayout] = useState(false);
+  const [payoutError, setPayoutError] = useState<string | null>(null);
 
-  const ledgerSummary = {
-    pending: 28500,
-    approved: 14200,
-    paid: 64200,
-    minThresholdUsd: 50,
-    isEligible: true,
+  const loadCommissionsData = async () => {
+    const token = getAccessToken();
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await fetchCommissions(token);
+      setCommissions(res as CommissionItem[]);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load commissions.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const commissions = [
-    { id: 'COMM-104', dealId: 'DS-8941', customer: 'Pearl Continental Hotel', product: 'Hotel Management', dealVal: '$15,000', rate: '30%', commAmt: '$4,500', status: 'APPROVED', date: '2026-08-12' },
-    { id: 'COMM-103', dealId: 'DS-8730', customer: 'Gourmet Bakery Chain', product: 'Sweets & Bakery', dealVal: '$20,000', rate: '30%', commAmt: '$6,000', status: 'APPROVED', date: '2026-07-30' },
-    { id: 'COMM-102', dealId: 'DS-9102', customer: 'Packages Mall Limited', product: 'Retail Management', dealVal: '$25,000', rate: '30%', commAmt: '$7,500', status: 'PENDING', date: '2026-08-11' },
-    { id: 'COMM-101', dealId: 'DS-8102', customer: 'Avari Hotel Group', product: 'Hotel Management', dealVal: '$45,000', rate: '30%', commAmt: '$13,500', status: 'PAID', date: '2026-06-20' },
-  ];
+  useEffect(() => {
+    loadCommissionsData();
+  }, []);
 
-  const payoutHistory = [
-    { id: 'PAY-801', date: '2026-06-22', amount: '$13,500 USD', method: 'Bank Transfer', ref: 'TRX-PK-9812401', status: 'PAID' },
-    { id: 'PAY-740', date: '2026-04-15', amount: '$50,700 USD', method: 'Bank Transfer', ref: 'TRX-PK-7712390', status: 'PAID' },
-  ];
+  // Compute ledger summary from loaded items
+  const pendingTotal = commissions
+    .filter((c) => c.status === 'PENDING')
+    .reduce((acc, c) => acc + c.commission_amount, 0);
 
-  const handleRequestPayout = (e: React.FormEvent) => {
+  const approvedTotal = commissions
+    .filter((c) => c.status === 'APPROVED')
+    .reduce((acc, c) => acc + c.commission_amount, 0);
+
+  const paidTotal = commissions
+    .filter((c) => c.status === 'PAID')
+    .reduce((acc, c) => acc + c.commission_amount, 0);
+
+  const isEligible = approvedTotal >= 50; // USD 50 threshold
+
+  const handleRequestPayout = async (e: React.FormEvent) => {
     e.preventDefault();
-    setRequestSubmitted(true);
-    setTimeout(() => {
-      setRequestSubmitted(false);
-      setModalOpen(false);
-    }, 1500);
+    setSubmittingPayout(true);
+    setPayoutError(null);
+
+    const token = getAccessToken();
+    if (!token) {
+      setPayoutError('Session expired. Please log in.');
+      setSubmittingPayout(false);
+      return;
+    }
+
+    try {
+      await requestPayout(token, { currency: 'USD' });
+      setRequestSubmitted(true);
+      setTimeout(() => {
+        setRequestSubmitted(false);
+        setModalOpen(false);
+        loadCommissionsData();
+      }, 1500);
+    } catch (err: unknown) {
+      setPayoutError(err instanceof Error ? err.message : 'Failed to submit payout request.');
+    } finally {
+      setSubmittingPayout(false);
+    }
   };
 
   return (
@@ -58,9 +109,10 @@ export default function CommissionsPayoutsPage() {
 
         <button
           onClick={() => setModalOpen(true)}
-          className="bg-secondary-container text-on-secondary font-bold text-xs px-6 py-3 rounded-xl hover:bg-secondary transition-all shadow-sm flex items-center gap-2 cursor-pointer"
+          disabled={!isEligible}
+          className="bg-secondary-container text-on-secondary font-bold text-xs px-6 py-3 rounded-xl hover:bg-secondary transition-all shadow-sm flex items-center gap-2 cursor-pointer disabled:opacity-50"
         >
-          <DollarSign className="w-4 h-4" /> Request Payout ($14,200 Approved)
+          <DollarSign className="w-4 h-4" /> Request Payout (${approvedTotal.toLocaleString()} Approved)
         </button>
       </div>
 
@@ -71,13 +123,18 @@ export default function CommissionsPayoutsPage() {
             <AlertCircle className="w-4 h-4 text-secondary-container" />
             <span>Minimum Release Threshold (PKR 5,000 / USD 50)</span>
           </div>
-          <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full border border-emerald-300">
-            ✓ Threshold Reached ($14,200 Available)
+          <span className={`text-xs font-bold px-3 py-1 rounded-full border ${
+            isEligible ? 'text-emerald-700 bg-emerald-100 border-emerald-300' : 'text-amber-700 bg-amber-100 border-amber-300'
+          }`}>
+            {isEligible ? `✓ Threshold Reached ($${approvedTotal.toLocaleString()} Available)` : `Under Threshold ($${approvedTotal.toLocaleString()} / $50 USD)`}
           </span>
         </div>
 
         <div className="w-full bg-outline-variant/40 rounded-full h-3 overflow-hidden">
-          <div className="bg-emerald-500 h-3 rounded-full" style={{ width: '100%' }}></div>
+          <div 
+            className="bg-emerald-500 h-3 rounded-full transition-all" 
+            style={{ width: `${Math.min(100, (approvedTotal / 50) * 100)}%` }}
+          ></div>
         </div>
 
         <div className="text-[11px] text-on-surface-variant">
@@ -89,19 +146,19 @@ export default function CommissionsPayoutsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-surface border border-outline-variant rounded-xl p-5">
           <div className="text-xs text-on-surface-variant font-medium">Pending Commission</div>
-          <div className="text-2xl font-bold text-amber-600 mt-1">${ledgerSummary.pending.toLocaleString()}</div>
+          <div className="text-2xl font-bold text-amber-600 mt-1">${pendingTotal.toLocaleString()}</div>
           <div className="text-[11px] text-on-surface-variant mt-1">Awaiting customer payment confirmation</div>
         </div>
 
         <div className="bg-surface border-2 border-emerald-500/40 rounded-xl p-5 bg-emerald-50/20">
           <div className="text-xs text-emerald-800 font-bold">Approved (Ready for Payout)</div>
-          <div className="text-2xl font-bold text-emerald-600 mt-1">${ledgerSummary.approved.toLocaleString()}</div>
+          <div className="text-2xl font-bold text-emerald-600 mt-1">${approvedTotal.toLocaleString()}</div>
           <div className="text-[11px] text-emerald-700 mt-1">Customer payment verified</div>
         </div>
 
         <div className="bg-surface border border-outline-variant rounded-xl p-5">
           <div className="text-xs text-on-surface-variant font-medium">Lifetime Paid Out</div>
-          <div className="text-2xl font-bold text-primary mt-1">${ledgerSummary.paid.toLocaleString()}</div>
+          <div className="text-2xl font-bold text-primary mt-1">${paidTotal.toLocaleString()}</div>
           <div className="text-[11px] text-on-surface-variant mt-1">Transferred to bank account</div>
         </div>
       </div>
@@ -110,77 +167,49 @@ export default function CommissionsPayoutsPage() {
       <div className="bg-surface border border-outline-variant rounded-xl p-6 shadow-xs space-y-4">
         <h2 className="text-lg font-bold text-primary">Commission Entries Ledger</h2>
 
+        {error && (
+          <div className="p-4 rounded-lg bg-red-50 text-red-700 text-xs">{error}</div>
+        )}
+
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-surface-container-low text-on-surface-variant uppercase font-semibold border-b border-outline-variant">
               <tr>
                 <th className="p-3">Comm ID</th>
-                <th className="p-3">Deal ID</th>
-                <th className="p-3">Customer</th>
                 <th className="p-3">Deal Value</th>
                 <th className="p-3">Tier Rate</th>
                 <th className="p-3">Commission Amount</th>
                 <th className="p-3">Status</th>
-                <th className="p-3">Date</th>
+                <th className="p-3">Date Created</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-outline-variant/60">
-              {commissions.map((c) => (
-                <tr key={c.id} className="hover:bg-surface-container-low/60 transition-colors">
-                  <td className="p-3 font-mono font-bold text-primary">{c.id}</td>
-                  <td className="p-3 font-mono text-on-surface-variant">{c.dealId}</td>
-                  <td className="p-3 font-semibold text-on-surface">{c.customer}</td>
-                  <td className="p-3 font-bold text-primary">{c.dealVal}</td>
-                  <td className="p-3 text-on-surface-variant">{c.rate}</td>
-                  <td className="p-3 font-bold text-secondary-container">{c.commAmt}</td>
-                  <td className="p-3">
-                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                      c.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
-                      c.status === 'PAID' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
-                      'bg-amber-100 text-amber-800 border border-amber-200'
-                    }`}>
-                      {c.status}
-                    </span>
-                  </td>
-                  <td className="p-3 text-on-surface-variant">{c.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Payout History */}
-      <div className="bg-surface border border-outline-variant rounded-xl p-6 shadow-xs space-y-4">
-        <h2 className="text-lg font-bold text-primary">Payout Release History</h2>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-surface-container-low text-on-surface-variant uppercase font-semibold border-b border-outline-variant">
-              <tr>
-                <th className="p-3">Payout ID</th>
-                <th className="p-3">Date Processed</th>
-                <th className="p-3">Amount Released</th>
-                <th className="p-3">Method</th>
-                <th className="p-3">Bank Transaction Ref</th>
-                <th className="p-3">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-outline-variant/60">
-              {payoutHistory.map((p) => (
-                <tr key={p.id} className="hover:bg-surface-container-low/60 transition-colors">
-                  <td className="p-3 font-mono font-bold text-primary">{p.id}</td>
-                  <td className="p-3 text-on-surface-variant">{p.date}</td>
-                  <td className="p-3 font-bold text-emerald-600">{p.amount}</td>
-                  <td className="p-3 text-on-surface-variant">{p.method}</td>
-                  <td className="p-3 font-mono font-semibold text-primary">{p.ref}</td>
-                  <td className="p-3">
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
-                      {p.status}
-                    </span>
+              {commissions.length > 0 ? (
+                commissions.map((c) => (
+                  <tr key={c.id} className="hover:bg-surface-container-low/60 transition-colors">
+                    <td className="p-3 font-mono font-bold text-primary">{c.id.slice(0, 8)}...</td>
+                    <td className="p-3 font-bold text-primary">${c.deal_value.toLocaleString()} {c.currency}</td>
+                    <td className="p-3 text-on-surface-variant">{c.commission_rate}%</td>
+                    <td className="p-3 font-bold text-secondary-container">${c.commission_amount.toLocaleString()} {c.currency}</td>
+                    <td className="p-3">
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        c.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
+                        c.status === 'PAID' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
+                        'bg-amber-100 text-amber-800 border border-amber-200'
+                      }`}>
+                        {c.status}
+                      </span>
+                    </td>
+                    <td className="p-3 text-on-surface-variant">{new Date(c.created_at).toLocaleDateString()}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="p-4 text-center text-on-surface-variant">
+                    {loading ? 'Loading commission entries...' : 'No commissions recorded yet.'}
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -199,6 +228,10 @@ export default function CommissionsPayoutsPage() {
               <p className="text-xs text-on-surface-variant">Confirm bank transfer payout details.</p>
             </div>
 
+            {payoutError && (
+              <div className="p-3 rounded-lg bg-red-50 text-red-700 text-xs font-medium">{payoutError}</div>
+            )}
+
             {requestSubmitted ? (
               <div className="text-center py-6 space-y-3">
                 <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto" />
@@ -210,32 +243,20 @@ export default function CommissionsPayoutsPage() {
                 <div className="bg-surface-container-low p-4 rounded-xl space-y-2 border border-outline-variant">
                   <div className="flex justify-between">
                     <span className="text-on-surface-variant">Available Approved Commission:</span>
-                    <span className="font-bold text-emerald-600 text-sm">$14,200 USD</span>
+                    <span className="font-bold text-emerald-600 text-sm">${approvedTotal.toLocaleString()} USD</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-on-surface-variant">Payout Method:</span>
                     <span className="font-bold text-primary">Manual Bank Transfer</span>
                   </div>
-                  <div className="flex justify-between border-t border-outline-variant/60 pt-2">
-                    <span className="text-on-surface-variant">Target Bank Account:</span>
-                    <span className="font-semibold text-primary">Meezan Bank (PK42 **** 9182)</span>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-primary block">Transfer Notes for Finance (Optional)</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Please process in USD equivalent"
-                    className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-outline-variant bg-surface text-on-surface focus:outline-none"
-                  />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-secondary-container text-on-secondary font-bold text-sm py-3 rounded-xl hover:bg-secondary transition-all cursor-pointer"
+                  disabled={submittingPayout}
+                  className="w-full bg-secondary-container text-on-secondary font-bold text-sm py-3 rounded-xl hover:bg-secondary transition-all cursor-pointer disabled:opacity-50"
                 >
-                  Confirm & Submit Payout Request
+                  {submittingPayout ? 'Submitting Request...' : 'Confirm & Submit Payout Request'}
                 </button>
               </form>
             )}

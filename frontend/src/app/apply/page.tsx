@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Hexagon, CheckCircle2, ArrowLeft, Send, Sparkles } from 'lucide-react';
+import { submitPartnerApplication } from '@/lib/api';
 
 export default function PartnerApplicationPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -22,11 +24,26 @@ export default function PartnerApplicationPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API call to backend /api/v1/auth/register-application
-    setTimeout(() => {
-      setLoading(false);
+    setApiError(null);
+
+    try {
+      await submitPartnerApplication({
+        full_name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        company_name: formData.companyName,
+        country: formData.country,
+        city: formData.city,
+        industry_focus: formData.industryFocus,
+        website: formData.website || undefined,
+        preferred_tier: formData.preferredTier,
+      });
       setSubmitted(true);
-    }, 1200);
+    } catch (err: unknown) {
+      setApiError(err instanceof Error ? err.message : 'Submission failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -261,6 +278,13 @@ export default function PartnerApplicationPage() {
               <div className="bg-surface-container-high/60 border border-outline-variant rounded-lg p-3 text-xs text-on-surface-variant">
                 ℹ️ <strong>Note:</strong> Final tier assignment and commission rate will be set by HR upon reviewing your application credentials.
               </div>
+
+              {/* Error Display */}
+              {apiError && (
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-medium">
+                  {apiError}
+                </div>
+              )}
 
               {/* Submit Action */}
               <div className="pt-2">

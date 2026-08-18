@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   Hexagon, 
   LayoutDashboard, 
@@ -19,10 +19,38 @@ import {
   ChevronRight,
   ExternalLink
 } from 'lucide-react';
+import { getSession, signOut as supabaseSignOut } from '@/lib/supabase/client';
 
 export default function PartnerLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('Partner');
+  const [userInitials, setUserInitials] = useState('P');
+  const [tier, setTier] = useState('Reseller');
+  const [commissionRate, setCommissionRate] = useState('30%');
+
+  useEffect(() => {
+    const session = getSession();
+    if (session?.user) {
+      const user = session.user;
+      const meta = user.user_metadata ?? {};
+      const email = user.email ?? '';
+      const name = (meta.full_name as string | undefined) ?? (meta.name as string | undefined) ?? email.split('@')[0] ?? 'Partner';
+      setUserEmail(email);
+      setUserName(name);
+      setUserInitials(name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2));
+      if (meta.tier) setTier(meta.tier as string);
+      if (meta.commission_rate) setCommissionRate(`${meta.commission_rate}%`);
+    }
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabaseSignOut();
+    router.push('/login');
+    router.refresh();
+  };
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -69,11 +97,11 @@ export default function PartnerLayout({ children }: { children: React.ReactNode 
           <div className="bg-primary-container/80 border border-primary-container p-3.5 rounded-xl">
             <div className="flex justify-between items-center text-xs text-on-primary-container mb-1">
               <span>Partner Tier:</span>
-              <span className="font-bold text-secondary-container">Reseller</span>
+              <span className="font-bold text-secondary-container">{tier}</span>
             </div>
             <div className="flex justify-between items-center text-xs">
               <span className="text-white font-medium">Commission Rate:</span>
-              <span className="font-bold text-emerald-400">30%</span>
+              <span className="font-bold text-emerald-400">{commissionRate}</span>
             </div>
           </div>
 
@@ -117,15 +145,15 @@ export default function PartnerLayout({ children }: { children: React.ReactNode 
 
           <div className="flex items-center gap-3 px-2 py-1.5">
             <div className="w-8 h-8 rounded-full bg-secondary-container text-primary font-bold text-xs flex items-center justify-center">
-              MA
+              {userInitials}
             </div>
             <div className="flex-1 overflow-hidden">
-              <div className="text-xs font-bold truncate text-white">Muhammad Ali</div>
-              <div className="text-[10px] text-on-primary-container truncate">ali@techsolutions.com</div>
+              <div className="text-xs font-bold truncate text-white">{userName}</div>
+              <div className="text-[10px] text-on-primary-container truncate">{userEmail}</div>
             </div>
-            <Link href="/login" className="text-on-primary-container hover:text-red-400 p-1" title="Sign Out">
+            <button onClick={handleSignOut} className="text-on-primary-container hover:text-red-400 p-1 cursor-pointer" title="Sign Out">
               <LogOut className="w-4 h-4" />
-            </Link>
+            </button>
           </div>
         </div>
       </aside>
@@ -136,7 +164,7 @@ export default function PartnerLayout({ children }: { children: React.ReactNode 
         <header className="hidden md:flex justify-between items-center px-8 py-4 border-b border-outline-variant bg-surface sticky top-0 z-30">
           <div>
             <h1 className="text-xl font-bold text-primary">Partner Portal</h1>
-            <p className="text-xs text-on-surface-variant">Welcome back, Muhammad Ali (TechSolutions Ltd)</p>
+            <p className="text-xs text-on-surface-variant">Welcome back, {userName}</p>
           </div>
 
           <div className="flex items-center gap-4">

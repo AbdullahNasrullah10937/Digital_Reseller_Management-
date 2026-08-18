@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { getAccessToken } from '@/lib/supabase/client';
+import { submitDeal } from '@/lib/api';
 import { 
   ArrowLeft, 
   Send, 
@@ -16,8 +18,10 @@ import {
 
 export default function RegisterNewDealPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [submitting, setSubmitting] = useState(false);
   const [duplicateWarning, setDuplicateWarning] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -25,7 +29,7 @@ export default function RegisterNewDealPage() {
     customerPhone: '',
     industry: 'POS/Retail',
     country: 'Pakistan',
-    productId: 'retail-management',
+    productId: searchParams.get('product_id') ?? '',
     estimatedValue: '',
     currency: 'USD',
     expectedCloseDate: '',
@@ -53,13 +57,37 @@ export default function RegisterNewDealPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setTimeout(() => {
+    setSubmitError(null);
+
+    const token = getAccessToken();
+    if (!token) {
+      setSubmitError('Session expired. Please sign in again.');
       setSubmitting(false);
-      router.push('/deals/DS-9102');
-    }, 1000);
+      return;
+    }
+
+    try {
+      await submitDeal(token, {
+        customer_name: formData.customerName,
+        customer_email: formData.customerEmail,
+        customer_phone: formData.customerPhone || undefined,
+        industry: formData.industry,
+        country: formData.country,
+        product_id: formData.productId,
+        estimated_value: parseFloat(formData.estimatedValue),
+        currency: formData.currency,
+        expected_close_date: formData.expectedCloseDate,
+        notes: formData.notes || undefined,
+      });
+      router.push('/deals');
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error ? err.message : 'Failed to submit deal.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

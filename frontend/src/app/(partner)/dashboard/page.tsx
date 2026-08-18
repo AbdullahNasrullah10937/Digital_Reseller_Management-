@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   TrendingUp, 
@@ -10,23 +11,67 @@ import {
   ArrowUpRight, 
   ShieldCheck, 
   AlertCircle, 
-  DollarSign, 
-  ExternalLink 
+  DollarSign 
 } from 'lucide-react';
+import { getAccessToken } from '@/lib/supabase/client';
+import { fetchPartnerDashboard } from '@/lib/api';
+
+type DashboardData = {
+  total_revenue: number;
+  pending_commission: number;
+  paid_commission: number;
+  active_deals: number;
+  tier: string;
+  commission_rate: number;
+  referral_code: string;
+  recent_deals: {
+    id: string;
+    customer_name: string;
+    status: string;
+    estimated_value: number;
+    currency: string;
+    created_at: string;
+  }[];
+};
 
 export default function PartnerDashboardPage() {
-  const summaryCards = [
-    { title: 'Total Revenue Generated', value: '$142,500', subtitle: 'Lifetime sales volume', icon: TrendingUp, color: 'text-primary' },
-    { title: 'Pending Commission', value: '$28,500', subtitle: 'Awaiting customer payment', icon: Clock, color: 'text-amber-600' },
-    { title: 'Paid Commission', value: '$64,200', subtitle: 'Transferred via Bank', icon: CheckCircle2, color: 'text-emerald-600' },
-    { title: 'Active Deals', value: '4 Deals', subtitle: 'Protected in pipeline', icon: Handshake, color: 'text-secondary-container' },
-  ];
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const recentDeals = [
-    { id: 'DS-9102', customer: 'Packages Mall Limited', product: 'Retail Management Software', value: '$25,000', rate: '30%', estComm: '$7,500', status: 'Approved', expiry: '48 days left' },
-    { id: 'DS-9088', customer: 'Faisal Textile Mills', product: 'Textile Industry ERP', value: '$35,000', rate: '30%', estComm: '$10,500', status: 'Pending Approval', expiry: 'Under Review' },
-    { id: 'DS-8941', customer: 'Pearl Continental Hotel', product: 'Hotel Management Software', value: '$15,000', rate: '30%', estComm: '$4,500', status: 'Won', expiry: 'Deal Closed' },
-    { id: 'DS-8730', customer: 'Gourmet Bakery Chain', product: 'Sweets & Bakery Manufacturing', value: '$20,000', rate: '30%', estComm: '$6,000', status: 'Approved', expiry: '12 days left' },
+  useEffect(() => {
+    const loadDashboard = async () => {
+      const token = getAccessToken();
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+      try {
+        const res = await fetchPartnerDashboard(token);
+        setData(res as DashboardData);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load dashboard.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDashboard();
+  }, []);
+
+  const totalRev = data ? `$${data.total_revenue.toLocaleString()}` : '$0';
+  const pendingComm = data ? `$${data.pending_commission.toLocaleString()}` : '$0';
+  const paidComm = data ? `$${data.paid_commission.toLocaleString()}` : '$0';
+  const activeDealsCount = data ? `${data.active_deals} Deals` : '0 Deals';
+  const partnerTier = data?.tier ?? 'Reseller';
+  const commissionRate = data ? `${data.commission_rate}%` : '30%';
+  const refCode = data?.referral_code ?? 'DS-PORTAL';
+
+  const summaryCards = [
+    { title: 'Total Revenue Generated', value: totalRev, subtitle: 'Lifetime sales volume', icon: TrendingUp, color: 'text-primary' },
+    { title: 'Pending Commission', value: pendingComm, subtitle: 'Awaiting customer payment', icon: Clock, color: 'text-amber-600' },
+    { title: 'Paid Commission', value: paidComm, subtitle: 'Transferred via Bank', icon: CheckCircle2, color: 'text-emerald-600' },
+    { title: 'Active Deals', value: activeDealsCount, subtitle: 'Protected in pipeline', icon: Handshake, color: 'text-secondary-container' },
   ];
 
   return (
@@ -35,11 +80,11 @@ export default function PartnerDashboardPage() {
       <div className="bg-gradient-to-r from-primary via-primary-container to-tertiary-container rounded-2xl p-6 md:p-8 text-white flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-md border border-primary-container">
         <div className="space-y-2 max-w-xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/20 border border-secondary-container/40 text-secondary-container text-xs font-bold uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5" /> Certified Partner Portal
+            <ShieldCheck className="w-3.5 h-3.5" /> {partnerTier} Tier ({commissionRate})
           </div>
           <h1 className="text-2xl md:text-3xl font-bold">Reseller Dashboard</h1>
           <p className="text-xs text-on-primary-container leading-relaxed">
-            Your deals are protected under Digitalsofts Deal Protection Policy. Submit new deals early to lock in your 30% margin share.
+            Your deals are protected under Digitalsofts Deal Protection Policy. Submit new deals early to lock in your {commissionRate} margin share.
           </p>
         </div>
 
@@ -65,7 +110,7 @@ export default function PartnerDashboardPage() {
                   <Icon className="w-5 h-5" />
                 </div>
               </div>
-              <div className="text-2xl font-bold text-primary mb-1">{card.value}</div>
+              <div className="text-2xl font-bold text-primary mb-1">{loading ? '...' : card.value}</div>
               <div className="text-[11px] text-on-surface-variant">{card.subtitle}</div>
             </div>
           );
@@ -80,7 +125,7 @@ export default function PartnerDashboardPage() {
             <span>Minimum Payout Threshold Status</span>
           </div>
           <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
-            Threshold Reached (Eligible)
+            Threshold Minimum (PKR 5,000 / USD 50)
           </span>
         </div>
 
@@ -89,7 +134,7 @@ export default function PartnerDashboardPage() {
         </div>
 
         <div className="flex justify-between text-[11px] text-on-surface-variant">
-          <span>Unpaid Approved Commission: <strong>$14,200 USD</strong></span>
+          <span>Unpaid Approved Commission: <strong>{pendingComm}</strong></span>
           <span>Threshold: PKR 5,000 / USD 50 Equivalent</span>
         </div>
       </div>
@@ -99,48 +144,54 @@ export default function PartnerDashboardPage() {
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-lg font-bold text-primary">Recent Registered Deals</h2>
-            <p className="text-xs text-on-surface-variant">Deals protected under your partner code (DS-10283)</p>
+            <p className="text-xs text-on-surface-variant">Deals protected under your referral code ({refCode})</p>
           </div>
           <Link href="/deals" className="text-xs font-bold text-secondary hover:underline flex items-center gap-1">
             View All Deals <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
+        {error && (
+          <div className="p-4 rounded-lg bg-red-50 text-red-700 text-xs">{error}</div>
+        )}
+
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-surface-container-low text-on-surface-variant uppercase font-semibold border-b border-outline-variant">
               <tr>
-                <th className="p-3">Deal ID</th>
                 <th className="p-3">Customer Name</th>
-                <th className="p-3">Product</th>
                 <th className="p-3">Est. Value</th>
-                <th className="p-3">Tier Rate</th>
-                <th className="p-3">Commission</th>
                 <th className="p-3">Status</th>
-                <th className="p-3">Protection Expiry</th>
+                <th className="p-3">Date Registered</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-outline-variant/60">
-              {recentDeals.map((deal) => (
-                <tr key={deal.id} className="hover:bg-surface-container-low/60 transition-colors">
-                  <td className="p-3 font-mono font-bold text-primary">{deal.id}</td>
-                  <td className="p-3 font-semibold text-on-surface">{deal.customer}</td>
-                  <td className="p-3 text-on-surface-variant">{deal.product}</td>
-                  <td className="p-3 font-bold text-primary">{deal.value}</td>
-                  <td className="p-3 text-on-surface-variant">{deal.rate}</td>
-                  <td className="p-3 font-bold text-secondary-container">{deal.estComm}</td>
-                  <td className="p-3">
-                    <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${
-                      deal.status === 'Approved' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
-                      deal.status === 'Won' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
-                      'bg-amber-100 text-amber-800 border border-amber-200'
-                    }`}>
-                      {deal.status}
-                    </span>
+              {data?.recent_deals && data.recent_deals.length > 0 ? (
+                data.recent_deals.map((deal) => (
+                  <tr key={deal.id} className="hover:bg-surface-container-low/60 transition-colors">
+                    <td className="p-3 font-semibold text-on-surface">{deal.customer_name}</td>
+                    <td className="p-3 font-bold text-primary">${deal.estimated_value.toLocaleString()} {deal.currency}</td>
+                    <td className="p-3">
+                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${
+                        deal.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
+                        deal.status === 'WON' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
+                        'bg-amber-100 text-amber-800 border border-amber-200'
+                      }`}>
+                        {deal.status}
+                      </span>
+                    </td>
+                    <td className="p-3 text-on-surface-variant font-medium">
+                      {new Date(deal.created_at).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className="p-4 text-center text-on-surface-variant">
+                    {loading ? 'Loading dashboard data...' : 'No deals registered yet.'}
                   </td>
-                  <td className="p-3 text-on-surface-variant font-medium">{deal.expiry}</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

@@ -1,46 +1,106 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
-  UserCheck, 
   CheckCircle2, 
   XCircle, 
-  Clock, 
-  ShieldAlert, 
   X, 
-  Building, 
-  Globe, 
-  Send 
+  Clock 
 } from 'lucide-react';
+import { getAccessToken } from '@/lib/supabase/client';
+import { fetchAdminApplications, approveApplication, rejectApplication } from '@/lib/api';
+
+type ApplicationItem = {
+  id: string;
+  full_name: string;
+  email: string;
+  phone: string;
+  company_name: string;
+  country: string;
+  city: string;
+  industry_focus: string;
+  website: string | null;
+  preferred_tier: string | null;
+  status: string;
+  rejection_reason: string | null;
+  created_at: string;
+};
 
 export default function PartnerApplicationsPage() {
-  const [selectedApp, setSelectedApp] = useState<any>(null);
+  const [applications, setApplications] = useState<ApplicationItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedApp, setSelectedApp] = useState<ApplicationItem | null>(null);
   const [actionSuccess, setActionSuccess] = useState<string | null>(null);
 
   const [assignedTier, setAssignedTier] = useState('RESELLER');
   const [assignedRate, setAssignedRate] = useState('30.00');
   const [rejectionReason, setRejectionReason] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const applications = [
-    { id: 'APP-104', name: 'Usman Tariq', company: 'Apex Tech Solutions', email: 'usman@apextech.pk', phone: '+92 300 9876543', country: 'Pakistan', city: 'Karachi', industry: 'POS/Retail', website: 'https://apextech.pk', preferredTier: 'reseller', status: 'PENDING_REVIEW', date: '2026-08-17 14:10' },
-    { id: 'APP-103', name: 'Tariq Al-Mansoor', company: 'Gulf Software Systems', email: 'tariq@gulfsoftware.sa', phone: '+966 50 1234567', country: 'Saudi Arabia', city: 'Riyadh', industry: 'Industry ERP', website: 'https://gulfsoftware.sa', preferredTier: 'certified', status: 'PENDING_REVIEW', date: '2026-08-17 11:45' },
-    { id: 'APP-102', name: 'Muhammad Ali', company: 'TechSolutions Ltd', email: 'ali@techsolutions.com', phone: '+92 300 1234567', country: 'Pakistan', city: 'Lahore', industry: 'POS/Retail', website: 'https://techsolutions.com', preferredTier: 'reseller', status: 'APPROVED', date: '2026-08-10 09:30' },
-  ];
-
-  const handleApprove = () => {
-    setActionSuccess(`Application ${selectedApp.id} Approved! Assigned ${assignedTier} (${assignedRate}%). Partner login created and welcome email dispatched.`);
-    setTimeout(() => {
-      setSelectedApp(null);
-      setActionSuccess(null);
-    }, 2000);
+  const loadData = async () => {
+    const token = getAccessToken();
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await fetchAdminApplications(token);
+      setApplications(res as ApplicationItem[]);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load applications.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleReject = () => {
-    setActionSuccess(`Application ${selectedApp.id} Rejected. Notification email dispatched.`);
-    setTimeout(() => {
-      setSelectedApp(null);
-      setActionSuccess(null);
-    }, 2000);
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const handleApprove = async () => {
+    if (!selectedApp) return;
+    setSubmitting(true);
+    const token = getAccessToken();
+    if (!token) return;
+
+    try {
+      await approveApplication(token, selectedApp.id, {
+        assigned_tier: assignedTier,
+        assigned_rate: parseFloat(assignedRate),
+      });
+      setActionSuccess(`Application ${selectedApp.company_name} Approved! Assigned ${assignedTier} (${assignedRate}%).`);
+      setTimeout(() => {
+        setSelectedApp(null);
+        setActionSuccess(null);
+        loadData();
+      }, 1500);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Approval failed.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!selectedApp) return;
+    setSubmitting(true);
+    const token = getAccessToken();
+    if (!token) return;
+
+    try {
+      await rejectApplication(token, selectedApp.id, rejectionReason || 'Qualifications did not meet minimum criteria.');
+      setActionSuccess(`Application ${selectedApp.company_name} Rejected.`);
+      setTimeout(() => {
+        setSelectedApp(null);
+        setActionSuccess(null);
+        loadData();
+      }, 1500);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Rejection failed.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -56,13 +116,18 @@ export default function PartnerApplicationsPage() {
         </div>
       )}
 
+      {error && (
+        <div className="bg-red-50 border border-red-300 text-red-800 p-4 rounded-xl text-xs font-bold">
+          {error}
+        </div>
+      )}
+
       {/* Applications Table */}
       <div className="bg-surface border border-outline-variant rounded-xl p-6 shadow-xs space-y-4">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-surface-container-low text-on-surface-variant uppercase font-semibold border-b border-outline-variant">
               <tr>
-                <th className="p-3">App ID</th>
                 <th className="p-3">Applicant & Company</th>
                 <th className="p-3">Location</th>
                 <th className="p-3">Industry Focus</th>
@@ -72,35 +137,42 @@ export default function PartnerApplicationsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-outline-variant/60">
-              {applications.map((app) => (
-                <tr key={app.id} className="hover:bg-surface-container-low/60 transition-colors">
-                  <td className="p-3 font-mono font-bold text-primary">{app.id}</td>
-                  <td className="p-3">
-                    <div className="font-semibold text-on-surface">{app.company}</div>
-                    <div className="text-[10px] text-on-surface-variant">{app.name} ({app.email})</div>
-                  </td>
-                  <td className="p-3 text-on-surface-variant">{app.city}, {app.country}</td>
-                  <td className="p-3 text-on-surface-variant font-medium">{app.industry}</td>
-                  <td className="p-3 font-bold text-secondary-container capitalize">{app.preferredTier}</td>
-                  <td className="p-3">
-                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                      app.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
-                      app.status === 'REJECTED' ? 'bg-red-100 text-red-800 border border-red-200' :
-                      'bg-amber-100 text-amber-800 border border-amber-200'
-                    }`}>
-                      {app.status}
-                    </span>
-                  </td>
-                  <td className="p-3 text-right">
-                    <button
-                      onClick={() => setSelectedApp(app)}
-                      className="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-primary-container transition-colors cursor-pointer"
-                    >
-                      Review & Approve
-                    </button>
+              {applications.length > 0 ? (
+                applications.map((app) => (
+                  <tr key={app.id} className="hover:bg-surface-container-low/60 transition-colors">
+                    <td className="p-3">
+                      <div className="font-semibold text-on-surface">{app.company_name}</div>
+                      <div className="text-[10px] text-on-surface-variant">{app.full_name} ({app.email})</div>
+                    </td>
+                    <td className="p-3 text-on-surface-variant">{app.city}, {app.country}</td>
+                    <td className="p-3 text-on-surface-variant font-medium">{app.industry_focus}</td>
+                    <td className="p-3 font-bold text-secondary-container capitalize">{app.preferred_tier ?? 'Reseller'}</td>
+                    <td className="p-3">
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        app.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
+                        app.status === 'REJECTED' ? 'bg-red-100 text-red-800 border border-red-200' :
+                        'bg-amber-100 text-amber-800 border border-amber-200'
+                      }`}>
+                        {app.status}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right">
+                      <button
+                        onClick={() => setSelectedApp(app)}
+                        className="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-primary-container transition-colors cursor-pointer"
+                      >
+                        Review & Action
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="p-4 text-center text-on-surface-variant">
+                    {loading ? 'Loading applications queue...' : 'No applications pending review.'}
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -118,18 +190,18 @@ export default function PartnerApplicationsPage() {
               <span className="text-[10px] font-bold uppercase tracking-wider text-secondary-container bg-secondary-container/10 px-2.5 py-0.5 rounded-full">
                 Application Review
               </span>
-              <h2 className="text-xl font-bold text-primary">{selectedApp.company} ({selectedApp.id})</h2>
-              <p className="text-xs text-on-surface-variant">Submitted by {selectedApp.name} on {selectedApp.date}</p>
+              <h2 className="text-xl font-bold text-primary">{selectedApp.company_name}</h2>
+              <p className="text-xs text-on-surface-variant">Submitted by {selectedApp.full_name} on {new Date(selectedApp.created_at).toLocaleDateString()}</p>
             </div>
 
             {/* Application Data Grid */}
             <div className="bg-surface-container-low border border-outline-variant p-4 rounded-xl grid grid-cols-2 gap-3 text-xs">
-              <div><span className="text-on-surface-variant">Applicant:</span> <strong>{selectedApp.name}</strong></div>
+              <div><span className="text-on-surface-variant">Applicant:</span> <strong>{selectedApp.full_name}</strong></div>
               <div><span className="text-on-surface-variant">Email:</span> <strong>{selectedApp.email}</strong></div>
               <div><span className="text-on-surface-variant">Phone:</span> <strong>{selectedApp.phone}</strong></div>
               <div><span className="text-on-surface-variant">Location:</span> <strong>{selectedApp.city}, {selectedApp.country}</strong></div>
-              <div><span className="text-on-surface-variant">Industry Focus:</span> <strong>{selectedApp.industry}</strong></div>
-              <div><span className="text-on-surface-variant">Website:</span> <strong>{selectedApp.website}</strong></div>
+              <div><span className="text-on-surface-variant">Industry Focus:</span> <strong>{selectedApp.industry_focus}</strong></div>
+              <div><span className="text-on-surface-variant">Website:</span> <strong>{selectedApp.website ?? 'N/A'}</strong></div>
             </div>
 
             {/* HR Decision Section */}
@@ -176,13 +248,15 @@ export default function PartnerApplicationsPage() {
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={handleApprove}
-                  className="flex-1 bg-emerald-600 text-white font-bold text-xs py-3 rounded-xl hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                  disabled={submitting}
+                  className="flex-1 bg-emerald-600 text-white font-bold text-xs py-3 rounded-xl hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs disabled:opacity-50"
                 >
                   <CheckCircle2 className="w-4 h-4" /> Approve Partner Application
                 </button>
                 <button
                   onClick={handleReject}
-                  className="flex-1 bg-red-600 text-white font-bold text-xs py-3 rounded-xl hover:bg-red-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                  disabled={submitting}
+                  className="flex-1 bg-red-600 text-white font-bold text-xs py-3 rounded-xl hover:bg-red-700 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs disabled:opacity-50"
                 >
                   <XCircle className="w-4 h-4" /> Reject Application
                 </button>
