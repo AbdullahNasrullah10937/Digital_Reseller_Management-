@@ -17,11 +17,17 @@ def _get_fernet() -> Fernet:
         key = base64.urlsafe_b64encode(settings.SECRET_KEY.zfill(32)[:32].encode('utf-8'))
         return Fernet(key)
 
+import bcrypt
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    except Exception:
+        return pwd_context.verify(plain_password, hashed_password)
 
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
 def encrypt_sensitive_data(plain_text: str) -> str:
     if not plain_text:

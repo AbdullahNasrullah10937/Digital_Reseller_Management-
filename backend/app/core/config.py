@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     
     # Database
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/digitalsofts_partner_portal")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres.ipvqflwwsuovmwctdqvc:Digitalsofts718@aws-0-ap-south-1.pooler.supabase.com:6543/postgres")
     
     # Business Rules Defaults
     MIN_PAYOUT_THRESHOLD_PKR: float = 5000.0
