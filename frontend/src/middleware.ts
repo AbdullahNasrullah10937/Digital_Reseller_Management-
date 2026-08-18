@@ -11,7 +11,7 @@ type CookieToSet = {
   options?: CookieOptions;
 };
 
-export async function middleware(request: NextRequest) {
+export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -39,7 +39,11 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  // Calling getUser refreshes the access token if expired and updates session cookies
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const { pathname } = request.nextUrl;
 
   if (
@@ -63,6 +67,10 @@ export async function middleware(request: NextRequest) {
   }
 
   return response;
+}
+
+export async function middleware(request: NextRequest) {
+  return await updateSession(request);
 }
 
 export const config = {
