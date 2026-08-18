@@ -18,13 +18,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Check for Supabase session cookie
-  // Supabase stores the session in a cookie named "sb-<project-ref>-auth-token"
+  // Check for session cookie
   const projectRef = process.env.NEXT_PUBLIC_SUPABASE_URL?.split('.')[0]?.split('//')[1] ?? '';
   const sessionCookieName = `sb-${projectRef}-auth-token`;
-  const sessionCookie = request.cookies.get(sessionCookieName)?.value ?? 
+  const sessionCookie = request.cookies.get('ds_session_token')?.value ??
+                        request.cookies.get(sessionCookieName)?.value ?? 
                         request.cookies.get('supabase-auth-token')?.value ?? 
-                        // Also check legacy cookie name
                         request.cookies.get(`sb-${projectRef}-auth-token.0`)?.value;
 
   const isAuthenticated = !!sessionCookie;

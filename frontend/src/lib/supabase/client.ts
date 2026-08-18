@@ -26,6 +26,8 @@ const SESSION_KEY = 'ds_partner_session';
 export function saveSession(session: SupabaseSession) {
   if (typeof window !== 'undefined') {
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+    // Also set a document cookie so middleware can read session state server-side
+    document.cookie = `ds_session_token=${session.access_token}; path=/; max-age=604800; SameSite=Lax`;
   }
 }
 
@@ -37,7 +39,7 @@ export function getSession(): SupabaseSession | null {
     const session = JSON.parse(raw) as SupabaseSession;
     // Check if expired (with 60s buffer)
     if (session.expires_at && Date.now() / 1000 > session.expires_at - 60) {
-      localStorage.removeItem(SESSION_KEY);
+      clearSession();
       return null;
     }
     return session;
@@ -49,6 +51,7 @@ export function getSession(): SupabaseSession | null {
 export function clearSession() {
   if (typeof window !== 'undefined') {
     localStorage.removeItem(SESSION_KEY);
+    document.cookie = 'ds_session_token=; path=/; max-age=0; SameSite=Lax';
   }
 }
 

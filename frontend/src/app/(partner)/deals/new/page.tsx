@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { getAccessToken } from '@/lib/supabase/client';
 import { submitDeal } from '@/lib/api';
 
-export const dynamic = 'force-dynamic';
 import { 
   ArrowLeft, 
   Send, 
@@ -17,6 +16,8 @@ import {
   Calendar, 
   Info 
 } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
 
 function RegisterNewDealForm() {
   const router = useRouter();

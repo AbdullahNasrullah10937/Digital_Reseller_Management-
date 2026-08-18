@@ -119,21 +119,21 @@ export async function requestPayout(token: string, payload: { currency: string }
 // ── Admin: Applications ───────────────────────────────────────────────────────
 
 export async function fetchAdminApplications(token: string) {
-  return apiFetch('/api/v1/admin/applications', {}, token);
+  return apiFetch('/api/v1/applications', {}, token);
 }
 
 export async function approveApplication(token: string, appId: string, payload: {
   assigned_tier: string;
   assigned_rate: number;
 }) {
-  return apiFetch(`/api/v1/admin/applications/${appId}/approve`, {
+  return apiFetch(`/api/v1/applications/${appId}/approve`, {
     method: 'POST',
     body: JSON.stringify(payload),
   }, token);
 }
 
 export async function rejectApplication(token: string, appId: string, reason: string) {
-  return apiFetch(`/api/v1/admin/applications/${appId}/reject`, {
+  return apiFetch(`/api/v1/applications/${appId}/reject`, {
     method: 'POST',
     body: JSON.stringify({ rejection_reason: reason }),
   }, token);

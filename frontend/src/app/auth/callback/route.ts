@@ -9,10 +9,17 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { session, error } = await supabase.auth.exchangeCodeForSession(code);
 
-    if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+    if (!error && session) {
+      const response = NextResponse.redirect(`${origin}${next}`);
+      // Set session cookie so middleware & client can pick it up
+      response.cookies.set('ds_session_token', session.access_token, {
+        path: '/',
+        maxAge: 604800,
+        sameSite: 'lax',
+      });
+      return response;
     }
   }
 
