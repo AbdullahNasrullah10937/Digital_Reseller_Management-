@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Hexagon, Mail, Lock, ShieldCheck, Globe, ArrowRight, UserCheck, Shield } from 'lucide-react';
@@ -18,7 +18,7 @@ function GoogleIcon() {
   );
 }
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectedFrom = searchParams.get('redirected_from') ?? '/dashboard';
@@ -247,5 +247,13 @@ export default function LoginPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-xs text-primary font-semibold">Loading portal sign in...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
