@@ -18,7 +18,7 @@ import {
   Info 
 } from 'lucide-react';
 
-export default function RegisterNewDealPage() {
+function RegisterNewDealForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [submitting, setSubmitting] = useState(false);
@@ -313,5 +313,13 @@ export default function RegisterNewDealPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function RegisterNewDealPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-xs text-primary font-semibold">Loading deal registration form...</div>}>
+      <RegisterNewDealForm />
+    </Suspense>
   );
 }
