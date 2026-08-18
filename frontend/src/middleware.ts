@@ -1,38 +1,59 @@
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-// Routes that require authentication (partner portal)
 const PARTNER_ROUTES = ['/dashboard', '/deals', '/products', '/commissions', '/profile'];
-// Routes that require admin role
 const ADMIN_ROUTES = ['/admin'];
-// Public routes — skip middleware
 const PUBLIC_ROUTES = ['/', '/login', '/apply', '/emails', '/auth/callback', '/admin/login'];
 
+type CookieToSet = {
+  name: string;
+  value: string;
+  options?: CookieOptions;
+};
+
 export async function middleware(request: NextRequest) {
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet: CookieToSet[]) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          response = NextResponse.next({
+            request,
+          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
+        },
+      },
+    }
+  );
+
+  const { data: { user } } = await supabase.auth.getUser();
   const { pathname } = request.nextUrl;
 
-  // Skip public routes and static assets
   if (
     PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/')) ||
     pathname.startsWith('/api/')
   ) {
-    return NextResponse.next();
+    return response;
   }
-
-  // Check for session cookie
-  const projectRef = process.env.NEXT_PUBLIC_SUPABASE_URL?.split('.')[0]?.split('//')[1] ?? '';
-  const sessionCookieName = `sb-${projectRef}-auth-token`;
-  const sessionCookie = request.cookies.get('ds_session_token')?.value ??
-                        request.cookies.get(sessionCookieName)?.value ?? 
-                        request.cookies.get('supabase-auth-token')?.value ?? 
-                        request.cookies.get(`sb-${projectRef}-auth-token.0`)?.value;
-
-  const isAuthenticated = !!sessionCookie;
 
   const isAdminRoute = ADMIN_ROUTES.some((r) => pathname.startsWith(r));
   const isPartnerRoute = PARTNER_ROUTES.some((r) => pathname.startsWith(r));
   const isAdminLoginPage = pathname === '/admin/login';
 
-  if (!isAuthenticated) {
+  if (!user) {
     if (isPartnerRoute || (isAdminRoute && !isAdminLoginPage)) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = '/login';
@@ -41,7 +62,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
