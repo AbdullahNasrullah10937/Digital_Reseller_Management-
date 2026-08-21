@@ -6,21 +6,21 @@ const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 let browserClient: ReturnType<typeof createBrowserClient> | null = null;
 
 export function createClient() {
+  // cookies must be present: @supabase/ssr 0.1.0 sets it to undefined otherwise
+  const options = {
+    cookies: {},
+    auth: {
+      flowType: 'pkce' as const,
+      persistSession: typeof window !== 'undefined',
+    },
+  };
+
   if (typeof window === 'undefined') {
-    return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        flowType: 'pkce',
-        persistSession: false,
-      },
-    });
+    return createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, options);
   }
 
   if (!browserClient) {
-    browserClient = createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        flowType: 'pkce',
-      },
-    });
+    browserClient = createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, options);
   }
 
   return browserClient;

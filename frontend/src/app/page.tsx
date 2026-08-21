@@ -6,12 +6,16 @@ import {
   ShieldCheck, 
   Grid, 
   Headphones, 
-  Award, 
   CheckCircle2, 
   Sparkles, 
-  Layers, 
-  ChevronRight 
+  Clock,
+  Shield,
+  BarChart3,
+  Mail,
+  Globe,
+  ArrowUpRight
 } from 'lucide-react';
+import ProductCatalog from '@/components/product-catalog';
 
 export default function LandingPage() {
   return (
@@ -64,148 +68,229 @@ export default function LandingPage() {
       {/* Main Content */}
       <main className="w-full">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-surface via-surface-container-low to-surface-container-high pt-12 pb-20 px-4 md:px-8 border-b border-outline-variant relative overflow-hidden">
-          <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-            <div className="flex flex-col gap-5 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-highest border border-outline-variant w-fit shadow-xs">
-                <Sparkles className="w-4 h-4 text-secondary-container fill-secondary-container" />
-                <span className="text-xs font-bold text-primary-container uppercase tracking-wider">Enterprise Partner Program</span>
+        <section className="hero-mesh pt-16 md:pt-20 pb-20 md:pb-28 px-4 md:px-8 border-b border-outline-variant relative overflow-hidden">
+          <div className="hero-grid absolute inset-0 pointer-events-none" aria-hidden />
+          <div className="absolute -top-24 right-0 w-[420px] h-[420px] rounded-full bg-secondary-container/10 blur-3xl pointer-events-none" aria-hidden />
+          <div className="absolute bottom-0 -left-16 w-[320px] h-[320px] rounded-full bg-primary/5 blur-3xl pointer-events-none" aria-hidden />
+
+          <div className="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-16 items-center relative z-10">
+            <div className="flex flex-col gap-6 max-w-2xl">
+              <div className="inline-flex items-center gap-2.5 pl-1.5 pr-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-outline-variant w-fit shadow-sm">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-secondary-container text-white">
+                  <Sparkles className="w-3.5 h-3.5" />
+                </span>
+                <span className="text-[11px] font-bold text-primary uppercase tracking-[0.14em]">Enterprise Partner Program</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight leading-tight">
-                Grow Your Business With Digitalsofts
+
+              <h1 className="text-[2.5rem] md:text-5xl xl:text-[3.5rem] font-bold text-primary tracking-tight leading-[1.12]">
+                Grow your revenue with the{' '}
+                <span className="text-secondary-container">Digitalsofts</span> partner network
               </h1>
-              <p className="text-lg text-on-surface-variant leading-relaxed">
-                Join an elite ecosystem of technology resellers and referral partners. Access 30+ B2B software products, earn up to 50% commissions, and protect your sales deals with guaranteed registration periods.
+
+              <p className="text-lg md:text-xl text-on-surface-variant leading-relaxed max-w-xl">
+                Register deals, earn 10–50% commission, and sell 32 B2B products — POS, industry ERP, hospitality, and real estate — with 90-day pipeline protection.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                <Link href="/apply" className="bg-secondary-container text-on-secondary font-semibold text-base px-6 py-3.5 rounded-xl hover:bg-secondary transition-all duration-200 shadow-md hover:shadow-lg text-center flex items-center justify-center gap-2 cursor-pointer">
+
+              <div className="flex flex-col sm:flex-row gap-3.5 pt-1">
+                <Link href="/apply" className="bg-secondary-container text-on-secondary font-semibold text-[15px] px-7 py-3.5 rounded-xl hover:bg-secondary transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 text-center flex items-center justify-center gap-2">
                   Apply for Partnership
                   <ArrowRight className="w-5 h-5" />
                 </Link>
-                <Link href="/login" className="bg-surface border-2 border-primary-container text-primary-container font-semibold text-base px-6 py-3.5 rounded-xl hover:bg-surface-variant transition-colors duration-200 text-center flex items-center justify-center gap-2 cursor-pointer">
+                <Link href="/login" className="bg-white/90 border border-outline-variant text-primary font-semibold text-[15px] px-7 py-3.5 rounded-xl hover:border-primary-container hover:bg-white transition-all duration-200 text-center flex items-center justify-center gap-2 shadow-sm">
                   Partner Portal Login
                 </Link>
               </div>
 
-              {/* Key Quick Stats */}
-              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-outline-variant/60">
-                <div>
-                  <div className="text-2xl font-bold text-primary">30+</div>
-                  <div className="text-xs text-on-surface-variant">Live Products</div>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 text-sm text-on-surface-variant">
+                <span className="inline-flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  Reviewed in 24–48 hours
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Shield className="w-4 h-4 text-primary" />
+                  Exclusive deal registration
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-secondary" />
+                  Fast bank payouts
+                </span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-0 pt-6 mt-1 border-t border-outline-variant/70">
+                <div className="pr-4">
+                  <div className="text-2xl md:text-3xl font-bold text-primary tracking-tight">32</div>
+                  <div className="text-xs font-medium text-on-surface-variant mt-0.5">Live products</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-secondary-container">10–50%</div>
-                  <div className="text-xs text-on-surface-variant">Commission Range</div>
+                <div className="px-4 border-l border-outline-variant/70">
+                  <div className="text-2xl md:text-3xl font-bold text-secondary-container tracking-tight">10–50%</div>
+                  <div className="text-xs font-medium text-on-surface-variant mt-0.5">Commission range</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-primary">90 Days</div>
-                  <div className="text-xs text-on-surface-variant">Deal Protection</div>
+                <div className="pl-4 border-l border-outline-variant/70">
+                  <div className="text-2xl md:text-3xl font-bold text-primary tracking-tight">90 days</div>
+                  <div className="text-xs font-medium text-on-surface-variant mt-0.5">Deal protection</div>
                 </div>
               </div>
             </div>
 
-            {/* Visual Card / Mockup preview */}
-            <div className="relative w-full h-[460px] rounded-2xl overflow-hidden border border-outline-variant shadow-xl bg-primary p-6 text-white flex flex-col justify-between">
-              <div className="flex justify-between items-center pb-4 border-b border-primary-container">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                  <span className="text-xs text-on-primary-container font-mono ml-2">Digitalsofts Partner Console v1.0</span>
+            {/* Product preview */}
+            <div className="relative w-full lg:pl-4 pb-10 lg:pb-6">
+              <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-primary/10 via-transparent to-secondary-container/20 blur-xl pointer-events-none" aria-hidden />
+
+              <div className="hero-float relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-primary/25 bg-primary text-white">
+                <div className="flex items-center justify-between px-5 py-3.5 bg-primary-container/80 border-b border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="flex gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                    </div>
+                    <span className="text-[11px] text-on-primary-container font-medium tracking-wide">Partner Console</span>
+                  </div>
+                  <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-secondary-container/15 text-secondary-container border border-secondary-container/25">
+                    Certified Reseller
+                  </span>
                 </div>
-                <span className="text-xs font-semibold px-2.5 py-1 rounded bg-secondary-container/20 text-secondary-container border border-secondary-container/30">
-                  Certified Reseller Tier
-                </span>
+
+                <div className="p-5 space-y-4">
+                  <div className="rounded-xl bg-white/5 border border-white/10 p-4 flex items-end justify-between">
+                    <div>
+                      <div className="text-[11px] uppercase tracking-wider text-on-primary-container font-semibold">Pipeline value</div>
+                      <div className="text-3xl font-bold tracking-tight mt-1">$142,500</div>
+                      <div className="text-xs text-emerald-400 mt-1 font-medium">+18.4% this quarter</div>
+                    </div>
+                    <div className="w-11 h-11 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary-container">
+                      <BarChart3 className="w-5 h-5" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-xl bg-white/5 border border-white/10 p-3.5">
+                      <div className="text-[11px] text-on-primary-container">Pending</div>
+                      <div className="text-lg font-bold text-secondary-container mt-0.5">$28,500</div>
+                    </div>
+                    <div className="rounded-xl bg-white/5 border border-white/10 p-3.5">
+                      <div className="text-[11px] text-on-primary-container">Paid out</div>
+                      <div className="text-lg font-bold text-emerald-400 mt-0.5">$64,200</div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl bg-white/5 border border-white/10 overflow-hidden">
+                    <div className="px-3.5 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-on-primary-container border-b border-white/10">
+                      Protected deals
+                    </div>
+                    <ul className="divide-y divide-white/10">
+                      <li className="px-3.5 py-2.5 flex items-center justify-between text-sm">
+                        <span className="text-white/90">Textile ERP — Lahore</span>
+                        <span className="text-[11px] font-semibold text-emerald-400">Approved</span>
+                      </li>
+                      <li className="px-3.5 py-2.5 flex items-center justify-between text-sm">
+                        <span className="text-white/90">Hotel PMS — Karachi</span>
+                        <span className="text-[11px] font-semibold text-secondary-container">Review</span>
+                      </li>
+                      <li className="px-3.5 py-2.5 flex items-center justify-between text-sm">
+                        <span className="text-white/90">Retail POS — Islamabad</span>
+                        <span className="text-[11px] font-semibold text-on-primary-container">Won</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-4 my-auto">
-                <div className="bg-primary-container/80 backdrop-blur border border-primary-container rounded-xl p-4 flex justify-between items-center">
-                  <div>
-                    <div className="text-xs text-on-primary-container">Active Registered Deals</div>
-                    <div className="text-2xl font-bold text-white">$142,500 USD</div>
-                  </div>
-                  <div className="w-10 h-10 rounded-lg bg-secondary-container/20 flex items-center justify-center text-secondary-container">
-                    <TrendingUp className="w-5 h-5" />
-                  </div>
+              <div className="absolute -bottom-4 -left-3 sm:-left-6 rounded-xl bg-white border border-outline-variant shadow-lg px-3.5 py-3 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-primary-container/80 backdrop-blur border border-primary-container rounded-xl p-4">
-                    <div className="text-xs text-on-primary-container">Pending Commission</div>
-                    <div className="text-xl font-bold text-secondary-container">$28,500</div>
-                  </div>
-                  <div className="bg-primary-container/80 backdrop-blur border border-primary-container rounded-xl p-4">
-                    <div className="text-xs text-on-primary-container">Paid Commission</div>
-                    <div className="text-xl font-bold text-emerald-400">$64,200</div>
-                  </div>
+                <div>
+                  <div className="text-xs font-bold text-primary">90-day protection</div>
+                  <div className="text-[11px] text-on-surface-variant">Registered deals stay exclusive</div>
                 </div>
               </div>
 
-              <div className="bg-primary-container/40 rounded-xl p-3 flex justify-between items-center text-xs text-on-primary-container border border-primary-container/40">
-                <span>Minimum Payout Threshold: PKR 5,000 / USD 50</span>
-                <span className="text-emerald-400 font-medium">Eligible for Release ✓</span>
+              <div className="absolute -top-3 -right-2 sm:-right-4 rounded-xl bg-white border border-outline-variant shadow-lg px-3.5 py-3 hidden sm:flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-secondary-container" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-primary">Up to 50% share</div>
+                  <div className="text-[11px] text-on-surface-variant">Certified reseller tier</div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Benefits Section */}
-        <section id="benefits" className="py-20 px-4 md:px-8 bg-surface">
-          <div className="max-w-container-max mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-primary mb-3">Unrivaled Partner Benefits</h2>
-              <p className="text-base text-on-surface-variant max-w-2xl mx-auto">
-                Our program is engineered to provide high profit margins, protected deal pipelines, and dedicated support for technology partners.
+        <section id="benefits" className="benefits-mesh py-20 md:py-24 px-4 md:px-8 relative overflow-hidden">
+          <div className="benefits-grid absolute inset-0 pointer-events-none" aria-hidden />
+
+          <div className="max-w-container-max mx-auto relative z-10">
+            <div className="text-center mb-14">
+              <span className="inline-flex items-center gap-2 text-[11px] font-bold text-secondary-container uppercase tracking-[0.16em] mb-3">
+                Why partners stay
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">Built for serious resellers</h2>
+              <p className="text-base text-on-primary-container max-w-2xl mx-auto leading-relaxed">
+                High margins, locked pipelines, a full B2B catalog, and payouts that actually clear — without the usual partner-program friction.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Benefit Card 1 */}
-              <div className="bg-surface border border-outline-variant rounded-xl p-6 hover:border-secondary-container hover:shadow-lg transition-all duration-200 group">
-                <div className="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center mb-5 group-hover:bg-secondary-container/10 transition-colors">
-                  <TrendingUp className="w-6 h-6 text-primary group-hover:text-secondary-container transition-colors" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              <div className="rounded-2xl p-6 bg-gradient-to-br from-orange-50 to-white border border-secondary-container/25 shadow-lg shadow-black/10 hover:-translate-y-1 hover:shadow-xl transition-all duration-200">
+                <div className="w-12 h-12 rounded-xl bg-secondary-container text-white flex items-center justify-center mb-5 shadow-md shadow-secondary-container/30">
+                  <TrendingUp className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold text-primary mb-2">Lucrative Commissions</h3>
+                <h3 className="text-lg font-semibold text-primary mb-2">Lucrative commissions</h3>
                 <p className="text-sm text-on-surface-variant leading-relaxed">
-                  Earn 10% to 50% recurring revenue share based on your tier, plus performance bonuses for high sales volume.
+                  Earn 10% to 50% recurring revenue share by tier, plus volume bonuses when you close consistently.
                 </p>
+                <div className="mt-5 pt-4 border-t border-orange-100 text-xs font-bold text-secondary uppercase tracking-wide">
+                  10–50% share
+                </div>
               </div>
 
-              {/* Benefit Card 2 */}
-              <div className="bg-surface border border-outline-variant rounded-xl p-6 hover:border-secondary-container hover:shadow-lg transition-all duration-200 group">
-                <div className="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center mb-5 group-hover:bg-secondary-container/10 transition-colors">
-                  <ShieldCheck className="w-6 h-6 text-primary group-hover:text-secondary-container transition-colors" />
+              <div className="rounded-2xl p-6 bg-gradient-to-br from-sky-50 to-white border border-sky-200/80 shadow-lg shadow-black/10 hover:-translate-y-1 hover:shadow-xl transition-all duration-200">
+                <div className="w-12 h-12 rounded-xl bg-primary text-secondary-container flex items-center justify-center mb-5 shadow-md shadow-primary/25">
+                  <ShieldCheck className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold text-primary mb-2">Protected Pipeline</h3>
+                <h3 className="text-lg font-semibold text-primary mb-2">Protected pipeline</h3>
                 <p className="text-sm text-on-surface-variant leading-relaxed">
-                  Register deals to lock in client exclusivity for 60 to 90 days with guaranteed margin protection.
+                  Register a deal and lock client exclusivity for 60–90 days with guaranteed margin protection.
                 </p>
+                <div className="mt-5 pt-4 border-t border-sky-100 text-xs font-bold text-primary uppercase tracking-wide">
+                  90-day exclusivity
+                </div>
               </div>
 
-              {/* Benefit Card 3 */}
-              <div className="bg-surface border border-outline-variant rounded-xl p-6 hover:border-secondary-container hover:shadow-lg transition-all duration-200 group">
-                <div className="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center mb-5 group-hover:bg-secondary-container/10 transition-colors">
-                  <Grid className="w-6 h-6 text-primary group-hover:text-secondary-container transition-colors" />
+              <div className="rounded-2xl p-6 bg-gradient-to-br from-indigo-50 to-white border border-indigo-200/70 shadow-lg shadow-black/10 hover:-translate-y-1 hover:shadow-xl transition-all duration-200">
+                <div className="w-12 h-12 rounded-xl bg-primary-container text-white flex items-center justify-center mb-5 shadow-md shadow-primary/20">
+                  <Grid className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold text-primary mb-2">30+ B2B Software Products</h3>
+                <h3 className="text-lg font-semibold text-primary mb-2">32 B2B products</h3>
                 <p className="text-sm text-on-surface-variant leading-relaxed">
-                  Access industry ERPs, POS software, hospitality, and real estate solutions from digitalsofts.com.
+                  POS, industry ERP, hospitality, SME, and real estate software — one catalog, one partner portal.
                 </p>
+                <div className="mt-5 pt-4 border-t border-indigo-100 text-xs font-bold text-primary-container uppercase tracking-wide">
+                  One catalog
+                </div>
               </div>
 
-              {/* Benefit Card 4 */}
-              <div className="bg-surface border border-outline-variant rounded-xl p-6 hover:border-secondary-container hover:shadow-lg transition-all duration-200 group">
-                <div className="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center mb-5 group-hover:bg-secondary-container/10 transition-colors">
-                  <Headphones className="w-6 h-6 text-primary group-hover:text-secondary-container transition-colors" />
+              <div className="rounded-2xl p-6 bg-gradient-to-br from-emerald-50 to-white border border-emerald-200/80 shadow-lg shadow-black/10 hover:-translate-y-1 hover:shadow-xl transition-all duration-200">
+                <div className="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center mb-5 shadow-md shadow-emerald-600/25">
+                  <Headphones className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold text-primary mb-2">Fast Bank Payouts</h3>
+                <h3 className="text-lg font-semibold text-primary mb-2">Fast bank payouts</h3>
                 <p className="text-sm text-on-surface-variant leading-relaxed">
-                  Accumulate earnings across deals and request bank payouts starting at PKR 5,000 / USD 50 minimum.
+                  Pool commissions across deals and request payouts from PKR 5,000 or USD 50 — no long holdbacks.
                 </p>
+                <div className="mt-5 pt-4 border-t border-emerald-100 text-xs font-bold text-emerald-700 uppercase tracking-wide">
+                  PKR 5,000 / USD 50
+                </div>
               </div>
             </div>
           </div>
         </section>
+
+        <ProductCatalog />
 
         {/* Partner Program Tiers Section */}
         <section id="tiers" className="py-20 px-4 md:px-8 bg-surface-container-low border-y border-outline-variant">
@@ -299,37 +384,149 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* CTA Banner */}
-        <section className="py-16 px-4 md:px-8 bg-primary text-white text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold mb-4">Ready to Become a Digitalsofts Partner?</h2>
-            <p className="text-base text-on-primary-container mb-8">
-              Submit your application in under 2 minutes. Our HR team reviews and approves applications within 24–48 hours.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/apply" className="bg-secondary-container text-on-secondary font-bold text-base px-8 py-3.5 rounded-xl hover:bg-secondary transition-all duration-200 shadow-md">
-                Start Partner Application
+        {/* Become a Partner CTA */}
+        <section className="relative overflow-hidden bg-primary px-4 md:px-8 py-20 md:py-24">
+          <div className="absolute -top-24 -right-16 w-[420px] h-[420px] rounded-full bg-secondary-container/20 blur-3xl pointer-events-none" aria-hidden />
+          <div className="absolute -bottom-28 -left-20 w-[360px] h-[360px] rounded-full bg-secondary-container/10 blur-3xl pointer-events-none" aria-hidden />
+
+          <div className="max-w-container-max mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div>
+              <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-secondary-container mb-4">
+                <Sparkles className="w-3.5 h-3.5" />
+                Become a partner
+              </span>
+              <h2 className="text-3xl md:text-4xl xl:text-[2.75rem] font-bold text-white tracking-tight leading-tight">
+                Join the Digitalsofts partner network in under two minutes
+              </h2>
+              <p className="mt-4 text-base text-on-primary-container leading-relaxed max-w-lg">
+                Tell us about your company, pick a preferred tier, and HR reviews your application within 24–48 hours. Approved partners get portal access the same day.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  '32 B2B products across retail, ERP, hospitality, and more',
+                  '10–50% commission with 90-day deal protection',
+                  'Bank payouts from PKR 5,000 or USD 50',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-white/90">
+                    <CheckCircle2 className="w-5 h-5 text-secondary-container shrink-0 mt-0.5" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl bg-white p-7 md:p-8 shadow-2xl shadow-black/20 border border-white/20">
+              <div className="text-xs font-bold uppercase tracking-wider text-secondary mb-1">Application path</div>
+              <h3 className="text-xl font-bold text-primary mb-6">Three steps to go live</h3>
+              <ol className="space-y-4 mb-7">
+                {[
+                  { step: '01', title: 'Submit your profile', desc: 'Company details, industry, and preferred tier.' },
+                  { step: '02', title: 'HR review', desc: 'Credentials checked within 24–48 business hours.' },
+                  { step: '03', title: 'Portal access', desc: 'Register deals and start earning commission.' },
+                ].map((row) => (
+                  <li key={row.step} className="flex gap-4">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-secondary-container text-xs font-bold">
+                      {row.step}
+                    </span>
+                    <div>
+                      <div className="text-sm font-semibold text-primary">{row.title}</div>
+                      <div className="text-xs text-on-surface-variant mt-0.5">{row.desc}</div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <Link
+                href="/apply"
+                className="w-full inline-flex items-center justify-center gap-2 bg-secondary-container text-on-secondary font-bold text-sm py-3.5 rounded-xl hover:bg-secondary transition-colors shadow-md"
+              >
+                Start partner application
+                <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/login" className="bg-primary-container text-white font-bold text-base px-8 py-3.5 rounded-xl hover:bg-primary-container/80 border border-on-primary-container/20 transition-all duration-200">
-                Log In to Existing Account
-              </Link>
+              <p className="text-center text-xs text-on-surface-variant mt-3">
+                Already approved?{' '}
+                <Link href="/login" className="font-semibold text-primary hover:text-secondary">
+                  Log in to the portal
+                </Link>
+              </p>
             </div>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="bg-surface-container-highest border-t border-outline-variant py-10 px-4 md:px-8 text-xs text-on-surface-variant">
-        <div className="max-w-container-max mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2 font-bold text-primary text-sm">
-            <Hexagon className="w-4 h-4 text-secondary-container fill-secondary-container" />
-            Digitalsofts Partner Program
+      <footer className="bg-primary text-white border-t-4 border-secondary-container">
+        <div className="max-w-container-max mx-auto px-4 md:px-8 py-14 md:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
+            <div className="sm:col-span-2 lg:col-span-1">
+              <Link href="/" className="inline-flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center">
+                  <Hexagon className="w-6 h-6 fill-white text-primary" />
+                </div>
+                <span className="text-lg font-bold tracking-tight">Digitalsofts</span>
+              </Link>
+              <p className="mt-4 text-sm text-on-primary-container leading-relaxed max-w-xs">
+                Official partner program for 32 B2B products — register deals, earn 10–50% commission, and get paid from PKR 5,000 / USD 50.
+              </p>
+              <div className="mt-5 flex flex-col gap-2 text-sm text-on-primary-container">
+                <a href="https://digitalsofts.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-secondary-container transition-colors">
+                  <Globe className="w-4 h-4" />
+                  digitalsofts.com
+                </a>
+                <a href="https://digitalmanager.pk" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-secondary-container transition-colors">
+                  <Globe className="w-4 h-4" />
+                  digitalmanager.pk
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.16em] text-secondary-container mb-4">Program</h3>
+              <ul className="space-y-2.5 text-sm text-on-primary-container">
+                <li><Link href="#benefits" className="hover:text-white transition-colors">Partner benefits</Link></li>
+                <li><Link href="#products" className="hover:text-white transition-colors">Product catalog</Link></li>
+                <li><Link href="#tiers" className="hover:text-white transition-colors">Partner tiers</Link></li>
+                <li><Link href="/apply" className="hover:text-white transition-colors">Become a partner</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.16em] text-secondary-container mb-4">Account</h3>
+              <ul className="space-y-2.5 text-sm text-on-primary-container">
+                <li><Link href="/login" className="hover:text-white transition-colors">Partner login</Link></li>
+                <li><Link href="/admin/login" className="hover:text-white transition-colors">Admin login</Link></li>
+                <li><Link href="/apply" className="hover:text-white transition-colors">Submit application</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Deal registration</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-[11px] font-bold uppercase tracking-[0.16em] text-secondary-container mb-4">Get started</h3>
+              <p className="text-sm text-on-primary-container leading-relaxed mb-4">
+                Applications are reviewed by HR within 24–48 hours. Approved partners get portal access the same day.
+              </p>
+              <Link
+                href="/apply"
+                className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary text-sm font-semibold px-4 py-2.5 rounded-lg hover:bg-secondary transition-colors"
+              >
+                Apply now
+                <ArrowUpRight className="w-4 h-4" />
+              </Link>
+              <p className="mt-4 inline-flex items-center gap-2 text-xs text-on-primary-container">
+                <Mail className="w-3.5 h-3.5" />
+                Review typically within 48 hours
+              </p>
+            </div>
           </div>
-          <div>© {new Date().getFullYear()} Digitalsofts. All rights reserved.</div>
-          <div className="flex gap-6">
-            <Link href="#" className="hover:text-primary">Privacy Policy</Link>
-            <Link href="#" className="hover:text-primary">Terms of Service</Link>
-            <Link href="#" className="hover:text-primary">Support</Link>
+        </div>
+
+        <div className="border-t border-white/10">
+          <div className="max-w-container-max mx-auto px-4 md:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-on-primary-container">
+            <p>© {new Date().getFullYear()} Digitalsofts. All rights reserved.</p>
+            <div className="flex items-center gap-5">
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+              <Link href="/support" className="hover:text-white transition-colors">Support</Link>
+            </div>
           </div>
         </div>
       </footer>

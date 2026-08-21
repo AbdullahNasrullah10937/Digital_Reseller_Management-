@@ -27,3 +27,51 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #75777f;
 }
+
+.hero-mesh {
+  background:
+    radial-gradient(ellipse 70% 55% at 92% 8%, rgba(255, 137, 40, 0.14), transparent 55%),
+    radial-gradient(ellipse 55% 50% at 0% 100%, rgba(16, 38, 74, 0.07), transparent 50%),
+    linear-gradient(180deg, #f9f9ff 0%, #eef2ff 58%, #f9f9ff 100%);
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(18, 27, 46, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(18, 27, 46, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 35%, transparent 80%);
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-float {
+  animation: hero-float 7s ease-in-out infinite;
+}
+
+.benefits-mesh {
+  background:
+    radial-gradient(ellipse 50% 60% at 0% 0%, rgba(255, 137, 40, 0.16), transparent 55%),
+    radial-gradient(ellipse 45% 50% at 100% 100%, rgba(16, 38, 74, 0.12), transparent 50%),
+    linear-gradient(180deg, #10264a 0%, #00112e 100%);
+}
+
+.benefits-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.catalog-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.catalog-panel-open {
+  max-height: 80rem;
+}
