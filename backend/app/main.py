@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
@@ -10,16 +11,22 @@ app = FastAPI(
     description="Digitalsofts Partner Portal API — Phase 1 MVP",
 )
 
-# CORS — allow Next.js dev and prod origins
+# CORS — local Next.js, production domain, plus Render env CORS_ORIGINS
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://partners.digitalsofts.com",  # production
+    "https://partners.digitalsofts.com",
 ]
+origins.extend(
+    origin.strip()
+    for origin in os.getenv("CORS_ORIGINS", "").split(",")
+    if origin.strip()
+)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
